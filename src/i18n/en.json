@@ -1,0 +1,64 @@
+{
+  "common": {
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "towers": "Towers",
+    "flats": "Flats",
+    "gallery": "Gallery",
+    "analytics": "Analytics",
+    "billing": "Billing",
+    "clients": "Clients",
+    "payments": "Payments",
+    "logs": "Logs",
+    "booking": "Booking",
+    "tour": "Virtual Tour"
+  },
+  "auth": {
+    "loginTitle": "Sign In",
+    "loginSubtitle": "Access your account",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "forgotPassword": "Forgot password?",
+    "loginButton": "Sign In",
+    "invalidCredentials": "Invalid email or password"
+  },
+  "user": {
+    "homeWelcome": "Welcome to Our Platform",
+    "projectListTitle": "Available Projects",
+    "projectDetailTitle": "Project Details",
+    "tourTitle": "Virtual Tour",
+    "bookingTitle": "Book Your Flat"
+  },
+  "client": {
+    "dashboardTitle": "Client Dashboard",
+    "projectsTitle": "My Projects",
+    "towersTitle": "Towers",
+    "flatsTitle": "Flats",
+    "galleryTitle": "Gallery",
+    "analyticsTitle": "Analytics",
+    "billingTitle": "Billing & Invoices"
+  },
+  "admin": {
+    "systemDashboardTitle": "System Dashboard",
+    "clientsTitle": "Manage Clients",
+    "paymentsTitle": "Payment Management",
+    "logsTitle": "System Logs"
+  }
+}
