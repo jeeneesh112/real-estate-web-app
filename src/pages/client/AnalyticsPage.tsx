@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Card,
@@ -17,6 +18,7 @@ import {
   LinearProgress,
   Stack,
   Divider,
+  Button,
 } from '@mui/material';
 import {
   TrendingUp,
@@ -296,6 +298,7 @@ const KPICard: React.FC<{
 };
 
 export const AnalyticsPage: React.FC = () => {
+  const navigate = useNavigate();
   const clientId = 101; // Mock client ID - in real app, get from auth state
 
   // Selectors
@@ -573,11 +576,21 @@ export const AnalyticsPage: React.FC = () => {
         <Grid item xs={12}>
           <Card>
             <CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <Event sx={{ mr: 1, color: '#4facfe' }} />
-                <Typography variant="h6" fontWeight="600">
-                  Recent Appointments
-                </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Event sx={{ mr: 1, color: '#4facfe' }} />
+                  <Typography variant="h6" fontWeight="600">
+                    Recent Appointments
+                  </Typography>
+                </Box>
+                <Button 
+                  variant="text" 
+                  size="small" 
+                  onClick={() => navigate('/client/appointments')}
+                  sx={{ color: '#4facfe', fontWeight: 600, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+                >
+                  See All →
+                </Button>
               </Box>
               <TableContainer component={Paper} variant="outlined">
                 <Table>
