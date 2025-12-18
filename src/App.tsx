@@ -24,6 +24,7 @@ import { GalleryPage } from './pages/client/GalleryPage';
 import { AnalyticsPage } from './pages/client/AnalyticsPage';
 import { BillingPage } from './pages/client/BillingPage';
 import { AboutPage } from './pages/client/AboutPage';
+import { AppointmentsPage } from './pages/client/AppointmentsPage';
 
 // Admin pages
 import { SystemDashboardPage } from './pages/admin/SystemDashboardPage';
@@ -156,6 +157,14 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['CLIENT']}>
                 <AnalyticsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/client/appointments"
+            element={
+              <ProtectedRoute allowedRoles={['CLIENT']}>
+                <AppointmentsPage />
               </ProtectedRoute>
             }
           />

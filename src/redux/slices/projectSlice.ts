@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from '../store';
 
 // Project types aligned with PROJECT table
 type ProjectType = 'BUY' | 'RENT' | 'BOTH';
@@ -123,6 +124,11 @@ const projectSlice = createSlice({
 
 export const { setProjects, selectProject } = projectSlice.actions;
 export default projectSlice.reducer;
+
+// Selectors
+export const getProjectById = (state: RootState, projectId: string) => {
+  return state.project.projects.find((project) => project.id === projectId);
+};
 
 // Export types
 export type { Project, ProjectType };

@@ -10,6 +10,7 @@ import galleryReducer from './slices/gallerySlice';
 import billingReducer from './slices/billingSlice';
 import clientProfileReducer from './slices/clientProfileSlice';
 import analyticsReducer from './slices/analyticsSlice';
+import bookedAppointmentReducer from './slices/bookedAppointmentSlice';
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     billing: billingReducer,
     clientProfile: clientProfileReducer,
     analytics: analyticsReducer,
+    bookedAppointment: bookedAppointmentReducer,
   },
 });
 

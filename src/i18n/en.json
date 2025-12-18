@@ -14,7 +14,13 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "success": "Success",
-    "about": "About"
+    "about": "About",
+    "id": "ID",
+    "user": "User",
+    "project": "Project",
+    "flatType": "Flat Type",
+    "status": "Status",
+    "createdAt": "Created At"
   },
   "navigation": {
     "home": "Home",
@@ -24,6 +30,7 @@
     "flats": "Flats",
     "gallery": "Gallery",
     "analytics": "Analytics",
+    "appointments": "Appointments",
     "billing": "Billing",
     "about": "About",
     "clients": "Clients",
@@ -56,6 +63,18 @@
     "galleryTitle": "Gallery",
     "analyticsTitle": "Analytics",
     "billingTitle": "Billing & Invoices",
+    "appointments": {
+      "title": "Appointments",
+      "subtitle": "Manage site visit bookings and appointments",
+      "tableTitle": "All Appointments",
+      "visitDate": "Visit Date",
+      "stats": {
+        "total": "Total Appointments",
+        "confirmed": "Confirmed",
+        "new": "New Requests",
+        "completed": "Completed"
+      }
+    },
     "aboutTitle": "About"
   },
   "admin": {

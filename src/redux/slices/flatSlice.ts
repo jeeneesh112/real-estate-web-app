@@ -252,5 +252,9 @@ export const getFlatsByTowerId = (state: RootState, towerId: string): Flat[] => 
   return state.flat.flats.filter((flat) => flat.tower_id === towerId);
 };
 
+export const getFlatById = (state: RootState, flatId: string) => {
+  return state.flat.flats.find((flat) => flat.id === flatId);
+};
+
 // Export types
 export type { Flat };

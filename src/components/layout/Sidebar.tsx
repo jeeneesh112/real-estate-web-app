@@ -23,6 +23,7 @@ import {
   ViewInAr,
   EventNote,
   Info,
+  CalendarMonth,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -59,6 +60,7 @@ const menuItems: MenuItem[] = [
   { key: 'client-flats', label: 'navigation.flats', icon: <Home />, path: '/client/flats', roles: ['CLIENT'] },
   { key: 'client-gallery', label: 'navigation.gallery', icon: <PhotoLibrary />, path: '/client/gallery', roles: ['CLIENT'] },
   { key: 'client-analytics', label: 'navigation.analytics', icon: <Analytics />, path: '/client/analytics', roles: ['CLIENT'] },
+  { key: 'client-appointments', label: 'navigation.appointments', icon: <CalendarMonth />, path: '/client/appointments', roles: ['CLIENT'] },
   { key: 'client-billing', label: 'navigation.billing', icon: <Payment />, path: '/client/billing', roles: ['CLIENT'] },
   { key: 'client-about', label: 'navigation.about', icon: <Info />, path: '/client/about', roles: ['CLIENT'] },
   

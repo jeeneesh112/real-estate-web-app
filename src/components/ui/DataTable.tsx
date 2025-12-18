@@ -70,22 +70,18 @@ interface SortState<T> {
  * Production-ready DataTable component with sorting, searching, and pagination
  * @template T - Row data type
  */
-export const DataTable = React.forwardRef<
-  HTMLDivElement,
-  DataTableProps<T>
->(
-  (
-    {
-      columns,
-      rows,
-      loading = false,
-      pageSizeOptions = [5, 10, 25, 50],
-      defaultPageSize = 10,
-      onRowClick,
-      getRowId = (_, index) => index,
-    },
-    ref
-  ) => {
+const DataTable = React.forwardRef(function DataTableInner<T = any>(
+  {
+    columns,
+    rows,
+    loading = false,
+    pageSizeOptions = [5, 10, 25, 50],
+    defaultPageSize = 10,
+    onRowClick,
+    getRowId = (_, index) => index,
+  }: DataTableProps<T>,
+  ref: React.ForwardedRef<HTMLDivElement>
+) {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(defaultPageSize);
     const [sort, setSort] = useState<SortState<T>>({
@@ -345,9 +341,9 @@ export const DataTable = React.forwardRef<
         )}
       </Paper>
     );
-  }
-);
+}) as React.ForwardRefExoticComponent<DataTableProps<any> & React.RefAttributes<HTMLDivElement>>;
 
 DataTable.displayName = 'DataTable';
 
+export { DataTable };
 export type { DataTableColumn, DataTableProps };

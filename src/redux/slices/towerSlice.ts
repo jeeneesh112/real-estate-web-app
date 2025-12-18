@@ -147,5 +147,9 @@ export const getTowersByProjectId = (state: RootState, projectId: string): Tower
   return state.tower.towers.filter((tower) => tower.project_id === projectId);
 };
 
+export const getTowerById = (state: RootState, towerId: string) => {
+  return state.tower.towers.find((tower) => tower.id === towerId);
+};
+
 // Export types
 export type { Tower };
