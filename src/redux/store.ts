@@ -9,6 +9,7 @@ import uiReducer from './slices/uiSlice';
 import galleryReducer from './slices/gallerySlice';
 import billingReducer from './slices/billingSlice';
 import clientProfileReducer from './slices/clientProfileSlice';
+import analyticsReducer from './slices/analyticsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     gallery: galleryReducer,
     billing: billingReducer,
     clientProfile: clientProfileReducer,
+    analytics: analyticsReducer,
   },
 });
 
