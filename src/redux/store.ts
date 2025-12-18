@@ -11,6 +11,7 @@ import billingReducer from './slices/billingSlice';
 import clientProfileReducer from './slices/clientProfileSlice';
 import analyticsReducer from './slices/analyticsSlice';
 import bookedAppointmentReducer from './slices/bookedAppointmentSlice';
+import clientDashboardReducer from './slices/clientDashboardSlice';
 
 export const store = configureStore({
   reducer: {
@@ -26,6 +27,7 @@ export const store = configureStore({
     clientProfile: clientProfileReducer,
     analytics: analyticsReducer,
     bookedAppointment: bookedAppointmentReducer,
+    clientDashboard: clientDashboardReducer,
   },
 });
 
