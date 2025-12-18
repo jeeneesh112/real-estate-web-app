@@ -35,23 +35,6 @@ export const AppointmentsPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState<EnrichedAppointment | null>(null);
 
-  // Get project name using selector
-  const getProjectName = (projectId: string) => {
-    const project = getProjectById(state, projectId);
-    return project ? project.name : 'Unknown Project';
-  };
-
-  // Get tower name using selector
-  const getTowerName = (towerId: string) => {
-    const tower = getTowerById(state, towerId);
-    return tower ? tower.name : 'Unknown Tower';
-  };
-
-  // Get flat type using selector
-  const getFlatType = (flatId: string) => {
-    const flat = getFlatById(state, flatId);
-    return flat ? flat.flat_type : 'N/A';
-  };
 
   // Enrich appointments with flat/tower/project details
   const enrichedAppointments: EnrichedAppointment[] = useMemo(() => {
@@ -200,8 +183,8 @@ export const AppointmentsPage: React.FC = () => {
       field: 'flatType',
       headerName: 'Flat Type',
       sortable: true,
-      width: 110,
-      align: 'center',
+      width: 120,
+    //   align: 'center',
       render: (row) => (
         <Chip
           label={row.flatType}
