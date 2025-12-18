@@ -13,7 +13,8 @@
     "next": "Next",
     "loading": "Loading...",
     "error": "An error occurred",
-    "success": "Success"
+    "success": "Success",
+    "about": "About"
   },
   "navigation": {
     "home": "Home",
@@ -24,6 +25,7 @@
     "gallery": "Gallery",
     "analytics": "Analytics",
     "billing": "Billing",
+    "about": "About",
     "clients": "Clients",
     "payments": "Payments",
     "logs": "Logs",
@@ -53,7 +55,8 @@
     "flatsTitle": "Flats",
     "galleryTitle": "Gallery",
     "analyticsTitle": "Analytics",
-    "billingTitle": "Billing & Invoices"
+    "billingTitle": "Billing & Invoices",
+    "aboutTitle": "About"
   },
   "admin": {
     "systemDashboardTitle": "System Dashboard",

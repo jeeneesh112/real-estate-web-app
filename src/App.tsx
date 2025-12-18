@@ -23,6 +23,7 @@ import { FlatsPage } from './pages/client/FlatsPage';
 import { GalleryPage } from './pages/client/GalleryPage';
 import { AnalyticsPage } from './pages/client/AnalyticsPage';
 import { BillingPage } from './pages/client/BillingPage';
+import { AboutPage } from './pages/client/AboutPage';
 
 // Admin pages
 import { SystemDashboardPage } from './pages/admin/SystemDashboardPage';
@@ -163,6 +164,14 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['CLIENT']}>
                 <BillingPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/client/about"
+            element={
+              <ProtectedRoute allowedRoles={['CLIENT']}>
+                <AboutPage />
               </ProtectedRoute>
             }
           />

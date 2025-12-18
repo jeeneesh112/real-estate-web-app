@@ -7,6 +7,8 @@ import tourReducer from './slices/tourSlice';
 import mapReducer from './slices/mapSlice';
 import uiReducer from './slices/uiSlice';
 import galleryReducer from './slices/gallerySlice';
+import billingReducer from './slices/billingSlice';
+import clientProfileReducer from './slices/clientProfileSlice';
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +20,8 @@ export const store = configureStore({
     map: mapReducer,
     ui: uiReducer,
     gallery: galleryReducer,
+    billing: billingReducer,
+    clientProfile: clientProfileReducer,
   },
 });
 
