@@ -36,7 +36,7 @@
     "clients": "Clients",
     "payments": "Payments",
     "logs": "Logs",
-    "booking": "Booking",
+    "booking": "Appointments",
     "tour": "Virtual Tour"
   },
   "auth": {
@@ -53,7 +53,7 @@
     "projectListTitle": "Available Projects",
     "projectDetailTitle": "Project Details",
     "tourTitle": "Virtual Tour",
-    "bookingTitle": "Book Your Flat"
+    "bookingTitle": "Appointments"
   },
   "client": {
     "dashboardTitle": "Client Dashboard",

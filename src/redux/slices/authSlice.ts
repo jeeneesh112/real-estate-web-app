@@ -36,6 +36,17 @@ interface AuthState {
   clientProfile: ClientProfile | null;
 }
 
+const loadAuthFromStorage = (): AuthState | null => {
+  if (typeof localStorage === 'undefined') return null;
+  const raw = localStorage.getItem('auth-state');
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as AuthState;
+  } catch (err) {
+    return null;
+  }
+};
+
 // Mock data - Initial state with logged-in CLIENT
 const mockClientUser: User = {
   id: 'user-001',
@@ -62,11 +73,24 @@ const mockClientProfile: ClientProfile = {
   created_by: 'user-001',
 };
 
-const initialState: AuthState = {
-  isAuthenticated: true,
-  user: mockClientUser,
-  clientProfile: mockClientProfile,
+const mockUser: User = {
+  id: 'user-101',
+  name: 'Jane Resident',
+  email: 'user@example.com',
+  role: 'USER',
+  status: 'ACTIVE',
+  created_at: '2025-01-10T10:00:00Z',
+  modified_at: '2025-12-17T08:20:00Z',
+  deleted_at: null,
+  created_by: 'system',
 };
+
+const initialState: AuthState =
+  loadAuthFromStorage() || {
+    isAuthenticated: true,
+    user: mockUser,
+    clientProfile: null,
+  };
 
 const authSlice = createSlice({
   name: 'auth',
@@ -82,11 +106,24 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload.user;
       state.clientProfile = action.payload.clientProfile || null;
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(
+          'auth-state',
+          JSON.stringify({
+            isAuthenticated: true,
+            user: action.payload.user,
+            clientProfile: action.payload.clientProfile || null,
+          })
+        );
+      }
     },
     logout: (state) => {
       state.isAuthenticated = false;
       state.user = null;
       state.clientProfile = null;
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('auth-state');
+      }
     },
   },
 });

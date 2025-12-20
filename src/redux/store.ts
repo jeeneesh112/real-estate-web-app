@@ -12,6 +12,7 @@ import clientProfileReducer from './slices/clientProfileSlice';
 import analyticsReducer from './slices/analyticsSlice';
 import bookedAppointmentReducer from './slices/bookedAppointmentSlice';
 import clientDashboardReducer from './slices/clientDashboardSlice';
+import appointmentReducer from './slices/appointmentSlice';
 
 export const store = configureStore({
   reducer: {
@@ -28,6 +29,7 @@ export const store = configureStore({
     analytics: analyticsReducer,
     bookedAppointment: bookedAppointmentReducer,
     clientDashboard: clientDashboardReducer,
+    appointment: appointmentReducer,
   },
 });
 

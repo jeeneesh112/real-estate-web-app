@@ -7,6 +7,7 @@ interface Tower {
   name: string;
   image_id: string | null;
   floors: number;
+  units_per_floor: number; // Number of units on each floor
   created_at: string;
   modified_at: string;
   deleted_at: string | null;
@@ -26,6 +27,7 @@ const mockTowers: Tower[] = [
     name: 'Tower A',
     image_id: 'img-tower-a-001',
     floors: 32,
+    units_per_floor: 3,
     created_at: '2025-01-15T10:30:00Z',
     modified_at: '2025-12-17T08:00:00Z',
     deleted_at: null,
@@ -37,6 +39,7 @@ const mockTowers: Tower[] = [
     name: 'Tower B',
     image_id: 'img-tower-b-001',
     floors: 28,
+    units_per_floor: 3,
     created_at: '2025-01-15T10:30:00Z',
     modified_at: '2025-12-17T08:00:00Z',
     deleted_at: null,
@@ -48,6 +51,7 @@ const mockTowers: Tower[] = [
     name: 'Tower C',
     image_id: 'img-tower-c-001',
     floors: 35,
+    units_per_floor: 3,
     created_at: '2025-01-15T10:30:00Z',
     modified_at: '2025-12-17T08:00:00Z',
     deleted_at: null,
@@ -60,6 +64,7 @@ const mockTowers: Tower[] = [
     name: 'North Wing',
     image_id: 'img-tower-nw-001',
     floors: 20,
+    units_per_floor: 2,
     created_at: '2025-02-10T14:30:00Z',
     modified_at: '2025-12-16T08:00:00Z',
     deleted_at: null,
@@ -71,6 +76,7 @@ const mockTowers: Tower[] = [
     name: 'South Wing',
     image_id: 'img-tower-sw-001',
     floors: 18,
+    units_per_floor: 3,
     created_at: '2025-02-10T14:30:00Z',
     modified_at: '2025-12-16T08:00:00Z',
     deleted_at: null,
@@ -83,6 +89,7 @@ const mockTowers: Tower[] = [
     name: 'Commercial Tower',
     image_id: 'img-tower-comm-001',
     floors: 40,
+    units_per_floor: 3,
     created_at: '2025-03-20T09:00:00Z',
     modified_at: '2025-12-17T08:00:00Z',
     deleted_at: null,
@@ -94,6 +101,7 @@ const mockTowers: Tower[] = [
     name: 'Residential Tower',
     image_id: 'img-tower-res-001',
     floors: 30,
+    units_per_floor: 2,
     created_at: '2025-03-20T09:00:00Z',
     modified_at: '2025-12-17T08:00:00Z',
     deleted_at: null,
@@ -106,6 +114,7 @@ const mockTowers: Tower[] = [
     name: 'Heritage Tower',
     image_id: 'img-tower-heritage-001',
     floors: 25,
+    units_per_floor: 4,
     created_at: '2025-04-05T11:20:00Z',
     modified_at: '2025-12-15T08:00:00Z',
     deleted_at: null,
@@ -118,6 +127,7 @@ const mockTowers: Tower[] = [
     name: 'Villa Complex',
     image_id: 'img-tower-villa-001',
     floors: 3,
+    units_per_floor: 2,
     created_at: '2025-05-12T08:00:00Z',
     modified_at: '2025-12-17T08:00:00Z',
     deleted_at: null,

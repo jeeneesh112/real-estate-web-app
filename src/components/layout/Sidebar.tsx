@@ -7,7 +7,6 @@ import {
   ListItemText,
   Toolbar,
   Divider,
-  Box,
 } from '@mui/material';
 import {
   Home,
@@ -26,8 +25,8 @@ import {
   CalendarMonth,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '../../redux/store';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 import { i18n } from '../../i18n';
 
 interface SidebarProps {
@@ -51,7 +50,8 @@ const menuItems: MenuItem[] = [
   { key: 'user-home', label: 'navigation.home', icon: <Home />, path: '/user/home', roles: ['USER'] },
   { key: 'user-projects', label: 'navigation.projects', icon: <Business />, path: '/user/projects', roles: ['USER'] },
   { key: 'user-tour', label: 'navigation.tour', icon: <ViewInAr />, path: '/user/tour', roles: ['USER'] },
-  { key: 'user-booking', label: 'navigation.booking', icon: <EventNote />, path: '/user/booking', roles: ['USER'] },
+  { key: 'user-appointments', label: 'navigation.appointments', icon: <EventNote />, path: '/user/appointments', roles: ['USER'] },
+  { key: 'user-about', label: 'navigation.about', icon: <Info />, path: '/user/about', roles: ['USER'] },
   
   // Client menu items
   { key: 'client-dashboard', label: 'navigation.dashboard', icon: <Dashboard />, path: '/client/dashboard', roles: ['CLIENT'] },

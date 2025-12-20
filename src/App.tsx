@@ -12,7 +12,8 @@ import { HomePage } from './pages/user/HomePage';
 import { ProjectListPage } from './pages/user/ProjectListPage';
 import { ProjectDetailPage as UserProjectDetailPage } from './pages/user/ProjectDetailPage';
 import { TourPage } from './pages/user/TourPage';
-import { BookingPage } from './pages/user/BookingPage';
+import { AppointmentsPage } from './pages/user/AppointmentsPage';
+import { AboutPage } from './pages/client/AboutPage';
 
 // Client pages
 import { DashboardPage } from './pages/client/DashboardPage';
@@ -23,8 +24,7 @@ import { FlatsPage } from './pages/client/FlatsPage';
 import { GalleryPage } from './pages/client/GalleryPage';
 import { AnalyticsPage } from './pages/client/AnalyticsPage';
 import { BillingPage } from './pages/client/BillingPage';
-import { AboutPage } from './pages/client/AboutPage';
-import { AppointmentsPage } from './pages/client/AppointmentsPage';
+import { AppointmentsPage as ClientAppointmentsPage } from './pages/client/AppointmentsPage';
 
 // Admin pages
 import { SystemDashboardPage } from './pages/admin/SystemDashboardPage';
@@ -95,10 +95,18 @@ function App() {
             }
           />
           <Route
-            path="/user/booking"
+            path="/user/appointments"
             element={
               <ProtectedRoute allowedRoles={['USER']}>
-                <BookingPage />
+                <AppointmentsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/about"
+            element={
+              <ProtectedRoute allowedRoles={['USER']}>
+                <AboutPage />
               </ProtectedRoute>
             }
           />
@@ -164,7 +172,7 @@ function App() {
             path="/client/appointments"
             element={
               <ProtectedRoute allowedRoles={['CLIENT']}>
-                <AppointmentsPage />
+                <ClientAppointmentsPage />
               </ProtectedRoute>
             }
           />
