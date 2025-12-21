@@ -253,9 +253,7 @@ export const AppointmentsPage: React.FC = () => {
       >
         {loading ? '⏹ Loading' : '▶ Demo'}
       </Button>
-      <Button variant="contained" color="primary">
-        + New Appointment
-      </Button>
+
     </Stack>
   );
 

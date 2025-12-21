@@ -178,10 +178,23 @@ export const ProjectsPage: React.FC = () => {
       <Button
         variant="contained"
         color="primary"
-        startIcon={<AddCircleOutline />}
         onClick={() => setOpenFormModal(true)}
+        sx={{
+          borderRadius: '12px',
+          textTransform: 'none',
+          fontSize: '0.95rem',
+          fontWeight: 600,
+          px: 3,
+          py: 1.2,
+          boxShadow: '0 4px 12px rgba(25, 103, 210, 0.25)',
+          transition: 'all 0.3s ease-in-out',
+          '&:hover': {
+            boxShadow: '0 6px 16px rgba(25, 103, 210, 0.35)',
+            transform: 'translateY(-2px)',
+          },
+        }}
       >
-        New Project
+        + New Project
       </Button>
     </Stack>
   );
