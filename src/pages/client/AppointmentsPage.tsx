@@ -18,6 +18,7 @@ import { RootState } from '../../redux/store';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { DataTable, type DataTableColumn } from '../../components/ui/DataTable';
 import { Stats, type StatItem } from '../../components/ui/Stats';
+import { AppointmentDetailModal } from '../../components/ui/AppointmentDetailModal';
 import { type BookedAppointment } from '../../redux/slices/bookedAppointmentSlice';
 import { getProjectById } from '../../redux/slices/projectSlice';
 import { getTowerById } from '../../redux/slices/towerSlice';
@@ -80,7 +81,7 @@ export const AppointmentsPage: React.FC = () => {
         label: 'Completed',
         value: completed,
         icon: <TaskAlt fontSize="large" />,
-        color: 'secondary',
+        color: 'info',
       },
       {
         label: 'Cancelled',
@@ -227,10 +228,14 @@ export const AppointmentsPage: React.FC = () => {
     },
   ];
 
-  // Handle row click
+  // Handle row click - open modal
   const handleRowClick = (appointment: EnrichedAppointment) => {
     setSelectedAppointment(appointment);
-    console.log('Appointment clicked:', appointment);
+  };
+
+  // Close modal
+  const handleCloseModal = () => {
+    setSelectedAppointment(null);
   };
 
   // Simulate loading toggle
@@ -263,27 +268,8 @@ export const AppointmentsPage: React.FC = () => {
       {/* Statistics Section */}
       <Stats stats={stats} />
 
-      {/* Selected Appointment Info */}
-      {selectedAppointment && (
-        <Box
-          sx={{
-            mb: 3,
-            p: 2,
-            backgroundColor: '#e3f2fd',
-            borderRadius: 1,
-            borderLeft: '4px solid',
-            borderLeftColor: 'primary.main',
-          }}
-        >
-          <Typography variant="body2">
-            <strong>Selected:</strong> {selectedAppointment.userName} - {selectedAppointment.projectName} / {selectedAppointment.towerName} ({selectedAppointment.flatType}) on{' '}
-            {new Date(selectedAppointment.visit_date).toLocaleDateString()}
-          </Typography>
-        </Box>
-      )}
-
       {/* DataTable */}
-      <DataTable<EnrichedAppointment>
+      <DataTable
         columns={columns}
         rows={enrichedAppointments}
         loading={loading}
@@ -292,6 +278,15 @@ export const AppointmentsPage: React.FC = () => {
         onRowClick={handleRowClick}
         getRowId={(row) => String(row.id)}
       />
+
+      {/* Appointment Detail Modal */}
+      {selectedAppointment && (
+        <AppointmentDetailModal
+          open={!!selectedAppointment}
+          onClose={handleCloseModal}
+          appointment={selectedAppointment as any}
+        />
+      )}
     </PageLayout>
   );
 };
