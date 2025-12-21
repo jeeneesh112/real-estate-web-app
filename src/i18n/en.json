@@ -31,6 +31,7 @@
     "gallery": "Gallery",
     "analytics": "Analytics",
     "appointments": "Appointments",
+    "virtualTour": "Virtual Tours",
     "billing": "Billing",
     "about": "About",
     "clients": "Clients",
@@ -53,7 +54,8 @@
     "projectListTitle": "Available Projects",
     "projectDetailTitle": "Project Details",
     "tourTitle": "Virtual Tour",
-    "bookingTitle": "Appointments"
+    "bookingTitle": "Appointments",
+    "dashboardTitle": "Your Dashboard"
   },
   "client": {
     "dashboardTitle": "Client Dashboard",

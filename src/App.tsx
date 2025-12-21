@@ -3,15 +3,15 @@ import { useSelector } from 'react-redux';
 import { RootState } from './redux/store';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { LayoutWrapper } from './components/layout/LayoutWrapper';
+import { ScrollToTop } from './components/layout/ScrollToTop';
 
 // Auth pages
 import { LoginPage } from './pages/auth/LoginPage';
 
 // User pages
-import { HomePage } from './pages/user/HomePage';
+import { UserDashboardPage } from './pages/user/UserDashboardPage';
 import { ProjectListPage } from './pages/user/ProjectListPage';
 import { ProjectDetailPage as UserProjectDetailPage } from './pages/user/ProjectDetailPage';
-import { TourPage } from './pages/user/TourPage';
 import { AppointmentsPage } from './pages/user/AppointmentsPage';
 import { AboutPage } from './pages/client/AboutPage';
 
@@ -25,6 +25,7 @@ import { GalleryPage } from './pages/client/GalleryPage';
 import { AnalyticsPage } from './pages/client/AnalyticsPage';
 import { BillingPage } from './pages/client/BillingPage';
 import { AppointmentsPage as ClientAppointmentsPage } from './pages/client/AppointmentsPage';
+import { VirtualToursPage } from './pages/client/VirtualToursPage';
 
 // Admin pages
 import { SystemDashboardPage } from './pages/admin/SystemDashboardPage';
@@ -52,6 +53,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop behavior="auto" />
       <Routes>
         {/* Public routes */}
         <Route path="/login" element={<LoginPage />} />
@@ -66,7 +68,7 @@ function App() {
             path="/user/home"
             element={
               <ProtectedRoute allowedRoles={['USER']}>
-                <HomePage />
+                <UserDashboardPage />
               </ProtectedRoute>
             }
           />
@@ -83,14 +85,6 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['USER']}>
                 <UserProjectDetailPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/user/tour"
-            element={
-              <ProtectedRoute allowedRoles={['USER']}>
-                <TourPage />
               </ProtectedRoute>
             }
           />
@@ -173,6 +167,14 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['CLIENT']}>
                 <ClientAppointmentsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/client/virtual-tours"
+            element={
+              <ProtectedRoute allowedRoles={['CLIENT']}>
+                <VirtualToursPage />
               </ProtectedRoute>
             }
           />

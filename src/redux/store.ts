@@ -13,6 +13,8 @@ import analyticsReducer from './slices/analyticsSlice';
 import bookedAppointmentReducer from './slices/bookedAppointmentSlice';
 import clientDashboardReducer from './slices/clientDashboardSlice';
 import appointmentReducer from './slices/appointmentSlice';
+import virtualTourReducer from './slices/virtualTourSlice';
+import userDashboardReducer from './slices/userDashboardSlice';
 
 export const store = configureStore({
   reducer: {
@@ -30,6 +32,8 @@ export const store = configureStore({
     bookedAppointment: bookedAppointmentReducer,
     clientDashboard: clientDashboardReducer,
     appointment: appointmentReducer,
+    virtualTour: virtualTourReducer,
+    userDashboard: userDashboardReducer,
   },
 });
 

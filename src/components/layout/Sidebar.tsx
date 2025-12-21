@@ -49,7 +49,6 @@ const menuItems: MenuItem[] = [
   // User menu items
   { key: 'user-home', label: 'navigation.home', icon: <Home />, path: '/user/home', roles: ['USER'] },
   { key: 'user-projects', label: 'navigation.projects', icon: <Business />, path: '/user/projects', roles: ['USER'] },
-  { key: 'user-tour', label: 'navigation.tour', icon: <ViewInAr />, path: '/user/tour', roles: ['USER'] },
   { key: 'user-appointments', label: 'navigation.appointments', icon: <EventNote />, path: '/user/appointments', roles: ['USER'] },
   { key: 'user-about', label: 'navigation.about', icon: <Info />, path: '/user/about', roles: ['USER'] },
   
@@ -60,6 +59,7 @@ const menuItems: MenuItem[] = [
   { key: 'client-flats', label: 'navigation.flats', icon: <Home />, path: '/client/flats', roles: ['CLIENT'] },
   { key: 'client-gallery', label: 'navigation.gallery', icon: <PhotoLibrary />, path: '/client/gallery', roles: ['CLIENT'] },
   { key: 'client-analytics', label: 'navigation.analytics', icon: <Analytics />, path: '/client/analytics', roles: ['CLIENT'] },
+  { key: 'client-virtual-tour', label: 'navigation.virtualTour', icon: <ViewInAr />, path: '/client/virtual-tours', roles: ['CLIENT'] },
   { key: 'client-appointments', label: 'navigation.appointments', icon: <CalendarMonth />, path: '/client/appointments', roles: ['CLIENT'] },
   { key: 'client-billing', label: 'navigation.billing', icon: <Payment />, path: '/client/billing', roles: ['CLIENT'] },
   { key: 'client-about', label: 'navigation.about', icon: <Info />, path: '/client/about', roles: ['CLIENT'] },
