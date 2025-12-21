@@ -54,6 +54,7 @@ export const projectFormFields: FormFieldConfig[] = [
     placeholder: 'e.g., 19.0760',
     min: -90,
     max: 90,
+    order: 1,
     helperText: 'Geographic latitude coordinate (-90 to 90)',
   },
   {
@@ -64,6 +65,7 @@ export const projectFormFields: FormFieldConfig[] = [
     placeholder: 'e.g., 72.8777',
     min: -180,
     max: 180,
+    order: 1,
     helperText: 'Geographic longitude coordinate (-180 to 180)',
   },
 ];
