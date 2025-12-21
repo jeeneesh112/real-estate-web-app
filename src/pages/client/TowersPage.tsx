@@ -1,7 +1,6 @@
 import { useState, useMemo } from 'react';
 import {
   Typography,
-  Box,
   Chip,
   Button,
   Stack,
@@ -17,6 +16,7 @@ import { RootState } from '../../redux/store';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { DataTable, type DataTableColumn } from '../../components/ui/DataTable';
 import { Stats, type StatItem } from '../../components/ui/Stats';
+import { TowerDetailModal } from '../../components/ui/TowerDetailModal';
 import { type Tower } from '../../redux/slices/towerSlice';
 import { i18n } from '../../i18n';
 
@@ -139,12 +139,14 @@ export const TowersPage: React.FC = () => {
     },
   ];
 
-  // Handle row click - navigate to tower detail
+  // Handle row click - open modal
   const handleRowClick = (tower: Tower) => {
     setSelectedTower(tower);
-    console.log('Selected tower:', tower);
-    // TODO: Navigate to tower detail page or flats page
-    // navigate(`/client/towers/${tower.id}/flats`);
+  };
+
+  // Close modal
+  const handleCloseModal = () => {
+    setSelectedTower(null);
   };
 
   // Simulate loading
@@ -177,26 +179,8 @@ export const TowersPage: React.FC = () => {
       {/* Statistics Section */}
       <Stats stats={stats} />
 
-      {/* Selected Tower Info */}
-      {selectedTower && (
-        <Box
-          sx={{
-            mb: 3,
-            p: 2,
-            backgroundColor: '#e3f2fd',
-            borderRadius: 1,
-            borderLeft: '4px solid',
-            borderLeftColor: 'primary.main',
-          }}
-        >
-          <Typography variant="body2">
-            <strong>Selected Tower:</strong> {selectedTower.name} - {getProjectName(selectedTower.project_id)} ({selectedTower.floors} Floors)
-          </Typography>
-        </Box>
-      )}
-
       {/* DataTable */}
-      <DataTable<Tower>
+      <DataTable
         columns={columns}
         rows={towers}
         loading={loading}
@@ -205,6 +189,25 @@ export const TowersPage: React.FC = () => {
         onRowClick={handleRowClick}
         getRowId={(row) => row.id}
       />
+
+      {/* Tower Detail Modal */}
+      {selectedTower && (
+        <TowerDetailModal
+          open={!!selectedTower}
+          onClose={handleCloseModal}
+          tower={{
+            id: selectedTower.id,
+            towerName: selectedTower.name,
+            projectName: getProjectName(selectedTower.project_id),
+            totalFloors: selectedTower.floors,
+            perFloorUnits: selectedTower.units_per_floor || 0,
+            totalFlats: (selectedTower.floors * (selectedTower.units_per_floor || 0)),
+            totalSellFlats: Math.floor((selectedTower.floors * (selectedTower.units_per_floor || 0)) * 0.6),
+            totalRentalFlats: Math.floor((selectedTower.floors * (selectedTower.units_per_floor || 0)) * 0.4),
+            availableFlats: Math.floor((selectedTower.floors * (selectedTower.units_per_floor || 0)) * 0.3),
+          }}
+        />
+      )}
     </PageLayout>
   );
 };
