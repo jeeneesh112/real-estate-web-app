@@ -7,6 +7,8 @@ import {
   Typography,
   Box,
   Alert,
+  Stack,
+  Chip,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -16,80 +18,92 @@ import { i18n } from '../../i18n';
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [selectedDemo, setSelectedDemo] = useState<string | null>(null);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const demoAccounts = [
+    {
+      id: 'user-demo',
+      label: 'Demo User',
+      email: 'user@example.com',
+      password: 'password',
+      user: {
+        id: 'user-100',
+        name: 'Demo User',
+        email: 'user@example.com',
+        role: 'USER' as const,
+        status: 'ACTIVE' as const,
+        created_at: '2025-01-01T00:00:00Z',
+        modified_at: '2025-12-17T00:00:00Z',
+        deleted_at: null,
+        created_by: 'system',
+      } as User,
+      redirectTo: '/user/home',
+    },
+    {
+      id: 'client-demo',
+      label: 'Demo Client',
+      email: 'client@example.com',
+      password: 'password',
+      user: {
+        id: 'user-200',
+        name: 'Demo Client Company',
+        email: 'client@example.com',
+        role: 'CLIENT' as const,
+        status: 'ACTIVE' as const,
+        created_at: '2025-01-01T00:00:00Z',
+        modified_at: '2025-12-17T00:00:00Z',
+        deleted_at: null,
+        created_by: 'system',
+      } as User,
+      clientProfile: {
+        id: 'profile-200',
+        user_id: 'user-200',
+        company_name: 'Demo Client Real Estate',
+        logo_image_id: 'img-demo-logo',
+        address: '456 Demo Street, City, State 12345',
+        subscription_id: 'sub-demo-001',
+        created_at: '2025-01-01T00:00:00Z',
+        modified_at: '2025-12-17T00:00:00Z',
+        deleted_at: null,
+        created_by: 'user-200',
+      } as ClientProfile,
+      redirectTo: '/client/dashboard',
+    },
+    {
+      id: 'admin-demo',
+      label: 'Demo Admin',
+      email: 'admin@example.com',
+      password: 'password',
+      user: {
+        id: 'user-300',
+        name: 'Demo Admin',
+        email: 'admin@example.com',
+        role: 'ADMIN' as const,
+        status: 'ACTIVE' as const,
+        created_at: '2025-01-01T00:00:00Z',
+        modified_at: '2025-12-17T00:00:00Z',
+        deleted_at: null,
+        created_by: 'system',
+      } as User,
+      redirectTo: '/admin/system-dashboard',
+    },
+  ];
+
+  const handleDemoSelect = (account: typeof demoAccounts[0]) => {
+    setSelectedDemo(account.id);
+    setEmail(account.email);
+    setPassword(account.password);
+    setError('');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
     try {
-      // TODO: Replace with actual API call
-      // Demo credentials for development
-      const demoAccounts = [
-        {
-          email: 'user@example.com',
-          password: 'password',
-          user: {
-            id: 'user-100',
-            name: 'Demo User',
-            email: 'user@example.com',
-            role: 'USER' as const,
-            status: 'ACTIVE' as const,
-            created_at: '2025-01-01T00:00:00Z',
-            modified_at: '2025-12-17T00:00:00Z',
-            deleted_at: null,
-            created_by: 'system',
-          } as User,
-          redirectTo: '/user/home',
-        },
-        {
-          email: 'client@example.com',
-          password: 'password',
-          user: {
-            id: 'user-200',
-            name: 'Demo Client Company',
-            email: 'client@example.com',
-            role: 'CLIENT' as const,
-            status: 'ACTIVE' as const,
-            created_at: '2025-01-01T00:00:00Z',
-            modified_at: '2025-12-17T00:00:00Z',
-            deleted_at: null,
-            created_by: 'system',
-          } as User,
-          clientProfile: {
-            id: 'profile-200',
-            user_id: 'user-200',
-            company_name: 'Demo Client Real Estate',
-            logo_image_id: 'img-demo-logo',
-            address: '456 Demo Street, City, State 12345',
-            subscription_id: 'sub-demo-001',
-            created_at: '2025-01-01T00:00:00Z',
-            modified_at: '2025-12-17T00:00:00Z',
-            deleted_at: null,
-            created_by: 'user-200',
-          } as ClientProfile,
-          redirectTo: '/client/dashboard',
-        },
-        {
-          email: 'admin@example.com',
-          password: 'password',
-          user: {
-            id: 'user-300',
-            name: 'Demo Admin',
-            email: 'admin@example.com',
-            role: 'ADMIN' as const,
-            status: 'ACTIVE' as const,
-            created_at: '2025-01-01T00:00:00Z',
-            modified_at: '2025-12-17T00:00:00Z',
-            deleted_at: null,
-            created_by: 'system',
-          } as User,
-          redirectTo: '/admin/system-dashboard',
-        },
-      ];
-
       const account = demoAccounts.find(
         (acc) => acc.email === email && acc.password === password
       );
@@ -128,11 +142,24 @@ export const LoginPage: React.FC = () => {
           </Typography>
 
           <Alert severity="info" sx={{ mb: 2, fontSize: '0.85rem' }}>
-            <strong>Demo Accounts:</strong><br />
-            USER: user@example.com / password<br />
-            CLIENT: client@example.com / password<br />
-            ADMIN: admin@example.com / password
+            <strong>Quick Login - Click a demo account:</strong><br />
           </Alert>
+
+          <Stack direction="row" spacing={1} sx={{ mb: 3, justifyContent: 'center', flexWrap: 'wrap' }}>
+            {demoAccounts.map((account) => (
+              <Chip
+                key={account.id}
+                label={account.label}
+                onClick={() => handleDemoSelect(account)}
+                color={selectedDemo === account.id ? 'primary' : 'default'}
+                variant={selectedDemo === account.id ? 'filled' : 'outlined'}
+                sx={{
+                  fontWeight: selectedDemo === account.id ? 700 : 500,
+                  cursor: 'pointer',
+                }}
+              />
+            ))}
+          </Stack>
 
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>

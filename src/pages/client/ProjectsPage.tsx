@@ -11,19 +11,25 @@ import {
   Sell,
   Key,
   CheckCircle,
+  AddCircleOutline,
 } from '@mui/icons-material';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { DataTable, type DataTableColumn } from '../../components/ui/DataTable';
 import { Stats, type StatItem } from '../../components/ui/Stats';
+import { FormModal, type FormFieldConfig } from '../../components/ui/FormModal';
 import { type Project } from '../../redux/slices/projectSlice';
+import { projectFormFields } from '../../config/formConfigs';
 import { i18n } from '../../i18n';
 
 export const ProjectsPage: React.FC = () => {
   const projects = useSelector((state: RootState) => state.project.projects);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [openFormModal, setOpenFormModal] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
 
   // Calculate statistics
   const stats: StatItem[] = useMemo(() => [
@@ -136,6 +142,25 @@ export const ProjectsPage: React.FC = () => {
     setLoading(!loading);
   };
 
+  // Handle new project form submission
+  const handleFormSubmit = async (values: Record<string, any>) => {
+    setFormLoading(true);
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      
+      console.log('New project submitted:', values);
+      // TODO: Dispatch action to add project to Redux store
+      // dispatch(addProject({...values, id: generateId(), created_at: new Date().toISOString(), ...}));
+      
+      setOpenFormModal(false);
+    } catch (error) {
+      console.error('Error creating project:', error);
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
   // Action buttons
   const actions = (
     <Stack direction="row" spacing={1}>
@@ -146,8 +171,13 @@ export const ProjectsPage: React.FC = () => {
       >
         {loading ? '⏹ Loading' : '▶ Demo'}
       </Button>
-      <Button variant="contained" color="primary">
-        + New Project
+      <Button
+        variant="contained"
+        color="primary"
+        startIcon={<AddCircleOutline />}
+        onClick={() => setOpenFormModal(true)}
+      >
+        New Project
       </Button>
     </Stack>
   );
@@ -188,6 +218,17 @@ export const ProjectsPage: React.FC = () => {
         pageSizeOptions={[5, 10, 25, 50]}
         onRowClick={handleRowClick}
         getRowId={(row) => row.id}
+      />
+
+      {/* New Project Form Modal */}
+      <FormModal
+        open={openFormModal}
+        title="Create New Project"
+        fields={projectFormFields}
+        onSubmit={handleFormSubmit}
+        onClose={() => setOpenFormModal(false)}
+        loading={formLoading}
+        maxWidth="sm"
       />
     </PageLayout>
   );
