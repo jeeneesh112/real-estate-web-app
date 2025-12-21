@@ -135,26 +135,25 @@ export const TourPage: React.FC = () => {
             onEnter={() => setShowIntro(false)}
           />
         )}
-        <Container maxWidth="lg">
-          {!isFullscreen && (
-            <Box
-              sx={{
-                mb: 3,
-                px: 2.5,
-                py: 2.2,
-                borderRadius: 3,
-                background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
-                border: '1px solid #e2e8f0',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1.5,
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
-                },
-              }}
-            >
+        {!isFullscreen && (
+          <Box
+            sx={{
+              mb: 3,
+              px: 2.5,
+              py: 2.2,
+              borderRadius: 3,
+              background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
+              border: '1px solid #e2e8f0',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1.5,
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+              },
+            }}
+          >
               <Button
                 startIcon={<ArrowBackIcon />}
                 onClick={() => navigate(-1)}
@@ -195,138 +194,199 @@ export const TourPage: React.FC = () => {
               </Box>
             </Box>
           )}
-        </Container>
 
-        <Box sx={{ position: 'relative' }}>
-        {!showIntro && (
-        <PanoramaViewer 
-          imageUrl={image.url} 
-          onHotspotClick={handleHotspotClick}
-          currentIndex={index}
-          totalScenes={total}
-          images={images}
-          isFullscreen={isFullscreen}
-        />
-        )}
-        {/* Room label overlay */}
-        {!isFullscreen && !showIntro && (
-          <Box
-            sx={{
-              position: 'absolute',
-              bottom: 24,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              backgroundColor: 'rgba(0,0,0,0.75)',
-              backdropFilter: 'blur(8px)',
-              color: '#fff',
-              px: 3.5,
-              py: 1.8,
-              borderRadius: 2.5,
-              pointerEvents: 'none',
-              zIndex: 10,
-              boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-              border: '1px solid rgba(255,255,255,0.1)',
-            }}
-          >
-            <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 0.5 }}>
-              {image.roomType || `Scene ${index + 1}`}
-            </Typography>
+        {/* Fullscreen mode with sidebar */}
+        {isFullscreen && (
+          <Box sx={{ position: 'relative', display: 'flex', height: 'calc(100vh - 120px)' }}>
+            {/* Fullscreen Sidebar */}
+            {!showIntro && (
+              <Box
+                sx={{
+                  width: 180,
+                  backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                  backdropFilter: 'blur(10px)',
+                  overflowY: 'auto',
+                  borderRight: '1px solid rgba(255, 255, 255, 0.15)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 0.8,
+                  padding: 1.5,
+                  zIndex: 9,
+                  boxShadow: '4px 0 20px rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                {images.map((img, i) => (
+                  <Box
+                    key={img.id}
+                    onClick={() => setIndex(i)}
+                    sx={{
+                      width: '100%',
+                      height: 85,
+                      backgroundImage: `url(${img.url})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      borderRadius: 2,
+                      border: i === index ? '3px solid #1976d2' : '1px solid rgba(255, 255, 255, 0.2)',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      boxShadow: i === index ? '0 0 20px rgba(25, 118, 210, 0.6)' : '0 2px 8px rgba(0, 0, 0, 0.3)',
+                      '&:hover': {
+                        transform: 'scale(1.05)',
+                        boxShadow: '0 0 20px rgba(25, 118, 210, 0.5)',
+                        border: '2px solid #1976d2',
+                      },
+                      position: 'relative',
+                    }}
+                  >
+                    {i === index && (
+                      <Box
+                        sx={{
+                          position: 'absolute',
+                          inset: 0,
+                          backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                          borderRadius: 2,
+                          backdropFilter: 'blur(2px)',
+                        }}
+                      />
+                    )}
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        position: 'absolute',
+                        bottom: 6,
+                        left: 0,
+                        right: 0,
+                        textAlign: 'center',
+                        color: '#fff',
+                        fontWeight: 700,
+                        textShadow: '0 2px 6px rgba(0, 0, 0, 0.9)',
+                        fontSize: '0.7rem',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        px: 0.8,
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        py: 0.5,
+                        borderRadius: '0 0 8px 8px',
+                      }}
+                    >
+                      {img.roomType || `Scene ${i + 1}`}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            )}
+
+            {/* Fullscreen Viewer */}
+            <Box sx={{ flex: 1, position: 'relative' }}>
+              {!showIntro && (
+                <PanoramaViewer 
+                  imageUrl={image.url} 
+                  onHotspotClick={handleHotspotClick}
+                  currentIndex={index}
+                  totalScenes={total}
+                  images={images}
+                  isFullscreen={isFullscreen}
+                />
+              )}
+              
+              {/* Fullscreen exit button */}
+              {!showIntro && (
+                <IconButton
+                  onClick={toggleFullscreen}
+                  sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    right: 20,
+                    transform: 'translateY(-50%)',
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    backdropFilter: 'blur(8px)',
+                    color: '#fff',
+                    zIndex: 10,
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+                    transition: 'all 0.2s ease',
+                    '&:hover': { 
+                      backgroundColor: 'rgba(0,0,0,0.85)',
+                      transform: 'translateY(-50%) scale(1.1)',
+                    },
+                  }}
+                  aria-label="Exit fullscreen"
+                >
+                  <FullscreenExitIcon />
+                </IconButton>
+              )}
+            </Box>
           </Box>
         )}
-        {/* Fullscreen button */}
-        {!isFullscreen && !showIntro && (
-          <IconButton
-            onClick={toggleFullscreen}
-            sx={{
-              position: 'absolute',
-              top: 20,
-              right: 20,
-              backgroundColor: 'rgba(0,0,0,0.7)',
-              backdropFilter: 'blur(8px)',
-              color: '#fff',
-              zIndex: 10,
-              border: '1px solid rgba(255,255,255,0.1)',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
-              transition: 'all 0.2s ease',
-              '&:hover': { 
-                backgroundColor: 'rgba(0,0,0,0.85)',
-                transform: 'scale(1.1)',
-              },
-            }}
-          >
-            <FullscreenIcon />
-          </IconButton>
+
+        {/* Normal (non-fullscreen) viewer */}
+        {!isFullscreen && (
+          <Box sx={{ position: 'relative' }}>
+            {!showIntro && (
+              <PanoramaViewer 
+                imageUrl={image.url} 
+                onHotspotClick={handleHotspotClick}
+                currentIndex={index}
+                totalScenes={total}
+                images={images}
+                isFullscreen={isFullscreen}
+              />
+            )}
+            {/* Room label overlay */}
+            {!showIntro && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  bottom: 24,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  backgroundColor: 'rgba(0,0,0,0.75)',
+                  backdropFilter: 'blur(8px)',
+                  color: '#fff',
+                  px: 3.5,
+                  py: 1.8,
+                  borderRadius: 2.5,
+                  pointerEvents: 'none',
+                  zIndex: 10,
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                }}
+              >
+                <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 0.5 }}>
+                  {image.roomType || `Scene ${index + 1}`}
+                </Typography>
+              </Box>
+            )}
+            {/* Fullscreen button */}
+            {!showIntro && (
+              <IconButton
+                onClick={toggleFullscreen}
+                sx={{
+                  position: 'absolute',
+                  top: 20,
+                  right: 20,
+                  backgroundColor: 'rgba(0,0,0,0.7)',
+                  backdropFilter: 'blur(8px)',
+                  color: '#fff',
+                  zIndex: 10,
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+                  transition: 'all 0.2s ease',
+                  '&:hover': { 
+                    backgroundColor: 'rgba(0,0,0,0.85)',
+                    transform: 'scale(1.1)',
+                  },
+                }}
+              >
+                <FullscreenIcon />
+              </IconButton>
+            )}
+          </Box>
         )}
-        {isFullscreen && !showIntro && (
-          <IconButton
-            onClick={toggleFullscreen}
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              right: 20,
-              transform: 'translateY(-50%)',
-              backgroundColor: 'rgba(0,0,0,0.7)',
-              backdropFilter: 'blur(8px)',
-              color: '#fff',
-              zIndex: 10,
-              border: '1px solid rgba(255,255,255,0.1)',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
-              transition: 'all 0.2s ease',
-              '&:hover': { 
-                backgroundColor: 'rgba(0,0,0,0.85)',
-                transform: 'translateY(-50%) scale(1.1)',
-              },
-            }}
-            aria-label="Exit fullscreen"
-          >
-            <FullscreenExitIcon />
-          </IconButton>
-        )}
-      </Box>
 
         {!isFullscreen && (
           <Container maxWidth="lg" sx={{ mt: 2 }}>
-            <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 3 }}>
-              <Button 
-                variant="outlined" 
-                startIcon={<NavigateBeforeIcon />} 
-                onClick={handlePrev}
-                sx={{
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  borderRadius: 2,
-                  px: 2.5,
-                  py: 1,
-                  transition: 'all 0.2s ease',
-                  '&:hover': {
-                    transform: 'translateX(-2px)',
-                  },
-                }}
-              >
-                Previous
-              </Button>
-              <Button 
-                variant="contained" 
-                endIcon={<NavigateNextIcon />} 
-                onClick={handleNext}
-                sx={{
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  borderRadius: 2,
-                  px: 2.5,
-                  py: 1,
-                  background: 'linear-gradient(135deg, #1976d2 0%, #1565c0 100%)',
-                  boxShadow: '0 4px 16px rgba(25, 118, 210, 0.3)',
-                  transition: 'all 0.2s ease',
-                  '&:hover': {
-                    transform: 'translateX(2px)',
-                    boxShadow: '0 6px 24px rgba(25, 118, 210, 0.4)',
-                  },
-                }}
-              >
-                Next
-              </Button>
-            </Stack>
             {/* Thumbnails with captions */}
             <Stack direction="row" spacing={1.5} justifyContent="center" sx={{ mt: 3.5, flexWrap: 'wrap' }}>
               {images.map((img, i) => (
