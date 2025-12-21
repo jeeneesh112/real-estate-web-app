@@ -4,6 +4,7 @@ import { RootState } from './redux/store';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { LayoutWrapper } from './components/layout/LayoutWrapper';
 import { ScrollToTop } from './components/layout/ScrollToTop';
+import { ToastProvider } from './components/ui/Toast';
 
 // Auth pages
 import { LoginPage } from './pages/auth/LoginPage';
@@ -53,9 +54,10 @@ function App() {
   };
 
   return (
-    <Router>
-      <ScrollToTop behavior="auto" />
-      <Routes>
+    <ToastProvider>
+      <Router>
+        <ScrollToTop behavior="auto" />
+        <Routes>
         {/* Public routes */}
         <Route path="/login" element={<LoginPage />} />
         
@@ -242,7 +244,8 @@ function App() {
         {/* Catch all - redirect to default route */}
         <Route path="*" element={<Navigate to={getDefaultRoute()} replace />} />
       </Routes>
-    </Router>
+      </Router>
+    </ToastProvider>
   );
 }
 

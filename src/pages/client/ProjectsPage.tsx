@@ -21,11 +21,13 @@ import { Stats, type StatItem } from '../../components/ui/Stats';
 import { FormModal, type FormFieldConfig } from '../../components/ui/FormModal';
 import { type Project } from '../../redux/slices/projectSlice';
 import { projectFormFields } from '../../config/formConfigs';
+import { useToast } from '../../hooks/useToast';
 import { i18n } from '../../i18n';
 
 export const ProjectsPage: React.FC = () => {
   const projects = useSelector((state: RootState) => state.project.projects);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  const toast = useToast();
   const [loading, setLoading] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [openFormModal, setOpenFormModal] = useState(false);
@@ -153,9 +155,11 @@ export const ProjectsPage: React.FC = () => {
       // TODO: Dispatch action to add project to Redux store
       // dispatch(addProject({...values, id: generateId(), created_at: new Date().toISOString(), ...}));
       
+      toast.success(`Project "${values.name}" created successfully!`);
       setOpenFormModal(false);
     } catch (error) {
       console.error('Error creating project:', error);
+      toast.error('Failed to create project. Please try again.');
     } finally {
       setFormLoading(false);
     }
