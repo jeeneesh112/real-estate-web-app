@@ -14,6 +14,7 @@ import { ProjectListPage } from './pages/user/ProjectListPage';
 import { ProjectDetailPage as UserProjectDetailPage } from './pages/user/ProjectDetailPage';
 import { AppointmentsPage } from './pages/user/AppointmentsPage';
 import { AboutPage } from './pages/client/AboutPage';
+import { TourPage } from './pages/user/TourPage';
 
 // Client pages
 import { DashboardPage } from './pages/client/DashboardPage';
@@ -85,6 +86,14 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['USER']}>
                 <UserProjectDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/projects/:id/virtual-tour"
+            element={
+              <ProtectedRoute allowedRoles={['USER']}>
+                <TourPage />
               </ProtectedRoute>
             }
           />

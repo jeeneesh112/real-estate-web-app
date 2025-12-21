@@ -344,6 +344,7 @@ export const ProjectDetailPage: React.FC = () => {
                     size="large"
                     fullWidth
                     sx={{ fontWeight: 700, py: 1.5 }}
+                    onClick={() => navigate(`/user/projects/${id}/virtual-tour`)}
                   >
                     Take Virtual Tour
                   </Button>

@@ -106,10 +106,40 @@ const virtualTourSlice = createSlice({
     setVirtualTours: (state, action: PayloadAction<VirtualTour[]>) => {
       state.virtualTours = action.payload;
     },
+    startVirtualTour: (
+      state,
+      action: PayloadAction<{ id: string; user_id: string; project_id: string; startedAtISO: string }>
+    ) => {
+      const { id, user_id, project_id, startedAtISO } = action.payload;
+      state.virtualTours.push({
+        id,
+        user_id,
+        project_id,
+        start_time: startedAtISO,
+        end_time: startedAtISO,
+        status: 'IN_PROGRESS',
+        created_at: startedAtISO,
+        modified_at: startedAtISO,
+        deleted_at: null,
+        created_by: user_id,
+      });
+    },
+    endVirtualTour: (
+      state,
+      action: PayloadAction<{ id: string; endedAtISO: string }>
+    ) => {
+      const { id, endedAtISO } = action.payload;
+      const tour = state.virtualTours.find((t) => t.id === id);
+      if (tour) {
+        tour.end_time = endedAtISO;
+        tour.status = 'COMPLETED';
+        tour.modified_at = endedAtISO;
+      }
+    },
   },
 });
 
-export const { setVirtualTours } = virtualTourSlice.actions;
+export const { setVirtualTours, startVirtualTour, endVirtualTour } = virtualTourSlice.actions;
 export default virtualTourSlice.reducer;
 
 export const selectVirtualTours = (state: RootState) => state.virtualTour.virtualTours;
