@@ -8,10 +8,6 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from '@mui/material';
 import {
   Home,
@@ -27,6 +23,7 @@ import { DataTable, type DataTableColumn } from '../../components/ui/DataTable';
 import { Stats, type StatItem } from '../../components/ui/Stats';
 import { type Flat, addFlat, updateFlatStatus } from '../../redux/slices/flatSlice';
 import { FormModal, type FormFieldConfig } from '../../components/ui/FormModal';
+import { ChangeStatusModal } from '../../components/ui/ChangeStatusModal';
 import { flatFormFieldsBase } from '../../config/formConfigs';
 import { useToast } from '../../hooks';
 import { i18n } from '../../i18n';
@@ -452,55 +449,19 @@ export const FlatsPage: React.FC = () => {
         </MenuItem>
       </Menu>
 
-      {/* Status Change Dialog */}
-      <Dialog open={openStatusDialog} onClose={handleStatusDialogClose} maxWidth="xs" fullWidth>
-        <DialogTitle>Change Flat Status</DialogTitle>
-        <DialogContent>
-          <Box sx={{ pt: 2 }}>
-            {selectedFlatForAction && (
-              <Typography variant="body2" sx={{ mb: 2 }}>
-                Flat: <strong>{selectedFlatForAction.id}</strong> - {selectedFlatForAction.flat_type}
-              </Typography>
-            )}
-            <Stack spacing={1}>
-              <Button
-                variant={newStatus === 'available' ? 'contained' : 'outlined'}
-                color="success"
-                onClick={() => setNewStatus('available')}
-                fullWidth
-              >
-                Available
-              </Button>
-              <Button
-                variant={newStatus === 'sold' ? 'contained' : 'outlined'}
-                color="info"
-                onClick={() => setNewStatus('sold')}
-                fullWidth
-              >
-                Sold
-              </Button>
-              <Button
-                variant={newStatus === 'rental' ? 'contained' : 'outlined'}
-                color="warning"
-                onClick={() => setNewStatus('rental')}
-                fullWidth
-              >
-                Rented
-              </Button>
-            </Stack>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleStatusDialogClose}>Cancel</Button>
-          <Button
-            onClick={() => handleStatusChange(newStatus)}
-            variant="contained"
-            color="primary"
-          >
-            Update Status
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {/* Status Change Modal */}
+      <ChangeStatusModal
+        open={openStatusDialog}
+        selectedStatus={newStatus}
+        onStatusChange={setNewStatus}
+        onClose={handleStatusDialogClose}
+        onConfirm={handleStatusChange}
+        title={`Change Status: ${selectedFlatForAction?.id || ''}`}
+        subtitle={selectedFlatForAction?.flat_type ? `Type: ${selectedFlatForAction.flat_type}` : undefined}
+        loading={false}
+        flatId={selectedFlatForAction?.id}
+        flatType={selectedFlatForAction?.flat_type}
+      />
     </PageLayout>
   );
 };
