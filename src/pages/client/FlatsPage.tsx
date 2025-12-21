@@ -5,19 +5,27 @@ import {
   Chip,
   Button,
   Stack,
+  IconButton,
+  Menu,
+  MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import {
   Home,
   CheckCircle,
   Sell,
   Key,
+  MoreVert,
 } from '@mui/icons-material';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { DataTable, type DataTableColumn } from '../../components/ui/DataTable';
 import { Stats, type StatItem } from '../../components/ui/Stats';
-import { type Flat, addFlat } from '../../redux/slices/flatSlice';
+import { type Flat, addFlat, updateFlatStatus } from '../../redux/slices/flatSlice';
 import { FormModal, type FormFieldConfig } from '../../components/ui/FormModal';
 import { flatFormFieldsBase } from '../../config/formConfigs';
 import { useToast } from '../../hooks';
@@ -33,6 +41,10 @@ export const FlatsPage: React.FC = () => {
   const [selectedFlat, setSelectedFlat] = useState<Flat | null>(null);
   const [openFormModal, setOpenFormModal] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedFlatForAction, setSelectedFlatForAction] = useState<Flat | null>(null);
+  const [openStatusDialog, setOpenStatusDialog] = useState(false);
+  const [newStatus, setNewStatus] = useState<'sold' | 'rental' | 'available'>('available');
 
   // Helper to get tower and project names
   const getTowerName = (towerId: string) => {
@@ -70,7 +82,6 @@ export const FlatsPage: React.FC = () => {
 
   // Calculate statistics
   const stats: StatItem[] = useMemo(() => {
-    const availableCount = flats.filter((f) => getFlatStatus(f) === 'AVAILABLE').length;
     const soldCount = flats.filter((f) => getFlatStatus(f) === 'SOLD').length;
     const rentedCount = flats.filter((f) => getFlatStatus(f) === 'RENTED').length;
     const forSaleCount = flats.filter((f) => {
@@ -113,14 +124,14 @@ export const FlatsPage: React.FC = () => {
   // Define columns with MUI styling
   const columns: DataTableColumn<Flat>[] = [
     {
-      field: 'id',
+      field: 'id' as keyof Flat,
       headerName: 'Flat ID',
       sortable: true,
       searchable: true,
       width: 140,
     },
     {
-      field: 'tower_id',
+      field: 'tower_id' as keyof Flat,
       headerName: 'Project',
       sortable: true,
       searchable: true,
@@ -132,7 +143,7 @@ export const FlatsPage: React.FC = () => {
       ),
     },
     {
-      field: 'tower_id',
+      field: 'floor' as keyof Flat,
       headerName: 'Tower',
       sortable: true,
       searchable: true,
@@ -144,7 +155,7 @@ export const FlatsPage: React.FC = () => {
       ),
     },
     {
-      field: 'flat_type',
+      field: 'flat_type' as keyof Flat,
       headerName: 'Type',
       sortable: true,
       width: 100,
@@ -159,7 +170,7 @@ export const FlatsPage: React.FC = () => {
       ),
     },
     {
-      field: 'size_sqft',
+      field: 'size_sqft' as keyof Flat,
       headerName: 'Area (sqft)',
       sortable: true,
       width: 120,
@@ -171,7 +182,7 @@ export const FlatsPage: React.FC = () => {
       ),
     },
     {
-      field: 'id',
+      field: 'gallery_json' as keyof Flat,
       headerName: 'Availability',
       sortable: false,
       width: 120,
@@ -195,9 +206,9 @@ export const FlatsPage: React.FC = () => {
           />
         );
       },
-    },
+    } as any,
     {
-      field: 'price',
+      field: 'price' as keyof Flat,
       headerName: 'Sale Price',
       sortable: true,
       width: 130,
@@ -209,7 +220,7 @@ export const FlatsPage: React.FC = () => {
       ),
     },
     {
-      field: 'rent',
+      field: 'rent' as keyof Flat,
       headerName: 'Rent/Month',
       sortable: true,
       width: 130,
@@ -221,7 +232,7 @@ export const FlatsPage: React.FC = () => {
       ),
     },
     {
-      field: 'id',
+      field: 'status' as keyof Flat,
       headerName: 'Status',
       sortable: false,
       width: 120,
@@ -245,7 +256,7 @@ export const FlatsPage: React.FC = () => {
       },
     },
     {
-      field: 'created_at',
+      field: 'created_at' as keyof Flat,
       headerName: 'Created Date',
       sortable: true,
       width: 160,
@@ -260,6 +271,22 @@ export const FlatsPage: React.FC = () => {
         </Typography>
       ),
     },
+    {
+      field: 'modified_at' as keyof Flat,
+      headerName: 'Actions',
+      sortable: false,
+      width: 80,
+      align: 'center',
+      render: (row: Flat) => (
+        <IconButton
+          size="small"
+          onClick={(e) => handleActionMenuOpen(e, row)}
+          sx={{ color: 'text.secondary' }}
+        >
+          <MoreVert fontSize="small" />
+        </IconButton>
+      ),
+    } as any,
   ];
 
   // Handle row click - navigate to flat detail
@@ -268,6 +295,40 @@ export const FlatsPage: React.FC = () => {
     console.log('Selected flat:', flat);
     // TODO: Navigate to flat detail page or 3D tour
     // navigate(`/client/flats/${flat.id}`);
+  };
+
+  // Action menu handlers
+  const handleActionMenuOpen = (event: React.MouseEvent<HTMLElement>, flat: Flat) => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+    setSelectedFlatForAction(flat);
+  };
+
+  const handleActionMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedFlatForAction(null);
+  };
+
+  const handleChangeStatusClick = () => {
+    if (selectedFlatForAction) {
+      setNewStatus(selectedFlatForAction.status);
+      setOpenStatusDialog(true);
+      setAnchorEl(null);
+    }
+  };
+
+  const handleStatusDialogClose = () => {
+    setOpenStatusDialog(false);
+  };
+
+  const handleStatusChange = (status: 'sold' | 'rental' | 'available') => {
+    if (selectedFlatForAction) {
+      dispatch(updateFlatStatus({ id: selectedFlatForAction.id, status }));
+      const statusLabels = { sold: 'Sold', rental: 'Rented', available: 'Available' };
+      toast.success(`Flat status updated to ${statusLabels[status]}`);
+      setOpenStatusDialog(false);
+      setSelectedFlatForAction(null);
+    }
   };
 
   // Simulate loading
@@ -379,6 +440,67 @@ export const FlatsPage: React.FC = () => {
         maxWidth="sm"
         submitLabel="Create"
       />
+
+      {/* Action Menu */}
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleActionMenuClose}
+      >
+        <MenuItem onClick={handleChangeStatusClick}>
+          Change Status
+        </MenuItem>
+      </Menu>
+
+      {/* Status Change Dialog */}
+      <Dialog open={openStatusDialog} onClose={handleStatusDialogClose} maxWidth="xs" fullWidth>
+        <DialogTitle>Change Flat Status</DialogTitle>
+        <DialogContent>
+          <Box sx={{ pt: 2 }}>
+            {selectedFlatForAction && (
+              <Typography variant="body2" sx={{ mb: 2 }}>
+                Flat: <strong>{selectedFlatForAction.id}</strong> - {selectedFlatForAction.flat_type}
+              </Typography>
+            )}
+            <Stack spacing={1}>
+              <Button
+                variant={newStatus === 'available' ? 'contained' : 'outlined'}
+                color="success"
+                onClick={() => setNewStatus('available')}
+                fullWidth
+              >
+                Available
+              </Button>
+              <Button
+                variant={newStatus === 'sold' ? 'contained' : 'outlined'}
+                color="info"
+                onClick={() => setNewStatus('sold')}
+                fullWidth
+              >
+                Sold
+              </Button>
+              <Button
+                variant={newStatus === 'rental' ? 'contained' : 'outlined'}
+                color="warning"
+                onClick={() => setNewStatus('rental')}
+                fullWidth
+              >
+                Rented
+              </Button>
+            </Stack>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleStatusDialogClose}>Cancel</Button>
+          <Button
+            onClick={() => handleStatusChange(newStatus)}
+            variant="contained"
+            color="primary"
+          >
+            Update Status
+          </Button>
+        </DialogActions>
+      </Dialog>
     </PageLayout>
   );
 };

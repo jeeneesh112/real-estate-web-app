@@ -1065,10 +1065,20 @@ const flatSlice = createSlice({
       };
       state.flats.push(newFlat);
     },
+    updateFlatStatus: (
+      state,
+      action: PayloadAction<{ id: string; status: 'sold' | 'rental' | 'available' }>
+    ) => {
+      const flat = state.flats.find((f) => f.id === action.payload.id);
+      if (flat) {
+        flat.status = action.payload.status;
+        flat.modified_at = new Date().toISOString();
+      }
+    },
   },
 });
 
-export const { selectFlat, setFlats, addFlat } = flatSlice.actions;
+export const { selectFlat, setFlats, addFlat, updateFlatStatus } = flatSlice.actions;
 export default flatSlice.reducer;
 
 // Selectors
