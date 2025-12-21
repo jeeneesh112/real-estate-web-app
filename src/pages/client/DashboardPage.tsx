@@ -9,7 +9,6 @@ import {
   LinearProgress,
   Stack,
   Button,
-  Badge,
 } from "@mui/material";
 import {
   TrendingUp,
@@ -28,7 +27,7 @@ import {
   getRecentActivities,
   getPropertyPerformance,
   getMonthlySales,
-  getTopInquiries,
+  getUpcomingAppointments,
 } from "../../redux/slices/clientDashboardSlice";
 import { PageLayout } from "../../components/layout/PageLayout";
 
@@ -134,7 +133,7 @@ export const DashboardPage: React.FC = () => {
   const recentActivities = useSelector(getRecentActivities);
   const propertyPerformance = useSelector(getPropertyPerformance);
   const monthlySales = useSelector(getMonthlySales);
-  const topInquiries = useSelector(getTopInquiries);
+  const upcomingAppointments = useSelector(getUpcomingAppointments);
 
   const maxMonthlySales = useMemo(
     () => Math.max(...monthlySales.map((m) => m.inquiries)),
@@ -244,7 +243,7 @@ export const DashboardPage: React.FC = () => {
             </CardContent>
           </Card>
         </Grid>
-        {/* ==================== TOP INQUIRIES ==================== */}
+        {/* ==================== UPCOMING APPOINTMENTS ==================== */}
         <Grid item xs={12} md={6}>
           <Card sx={{ borderRadius: "16px" }}>
             <CardContent>
@@ -257,7 +256,7 @@ export const DashboardPage: React.FC = () => {
                 }}
               >
                 <Typography variant="h6" fontWeight="600">
-                  Top Inquiries
+                  Upcoming Appointments
                 </Typography>
                 <Button
                   size="small"
@@ -269,43 +268,27 @@ export const DashboardPage: React.FC = () => {
               </Box>
 
               <Stack spacing={1.5}>
-                {topInquiries.map((inquiry) => {
-                  const getPriorityColor = (priority: string) => {
-                    switch (priority) {
-                      case "high":
-                        return { bg: "#ff6b6b20", color: "#ff6b6b" };
-                      case "medium":
-                        return { bg: "#ffa50020", color: "#ffa500" };
-                      case "low":
-                        return { bg: "#667eea20", color: "#667eea" };
-                      default:
-                        return { bg: "#667eea20", color: "#667eea" };
-                    }
-                  };
-
+                {upcomingAppointments.map((appointment) => {
                   const getStatusColor = (status: string) => {
                     switch (status) {
-                      case "pending":
-                        return { bg: "#ffa50020", color: "#ffa500" };
-                      case "contacted":
-                        return { bg: "#667eea20", color: "#667eea" };
-                      case "site-visit":
+                      case "scheduled":
                         return { bg: "#4facfe20", color: "#4facfe" };
-                      case "interested":
+                      case "completed":
                         return { bg: "#43e97b20", color: "#43e97b" };
-                      case "not-interested":
+                      case "cancelled":
                         return { bg: "#ff6b6b20", color: "#ff6b6b" };
+                      case "rescheduled":
+                        return { bg: "#ffa50020", color: "#ffa500" };
                       default:
                         return { bg: "#667eea20", color: "#667eea" };
                     }
                   };
 
-                  const priorityColor = getPriorityColor(inquiry.priority);
-                  const statusColor = getStatusColor(inquiry.status);
+                  const statusColor = getStatusColor(appointment.status);
 
                   return (
                     <Box
-                      key={inquiry.id}
+                      key={appointment.id}
                       sx={{
                         display: "flex",
                         alignItems: "center",
@@ -326,36 +309,42 @@ export const DashboardPage: React.FC = () => {
                           }}
                         >
                           <Typography variant="body2" fontWeight="600">
-                            {inquiry.clientName}
+                            {appointment.clientName}
                           </Typography>
-                          <Chip
-                            label={inquiry.priority.toUpperCase()}
-                            size="small"
-                            sx={{
-                              backgroundColor: priorityColor.bg,
-                              color: priorityColor.color,
-                              height: 20,
-                              fontSize: "0.65rem",
-                              fontWeight: 600,
-                            }}
-                          />
                         </Box>
                         <Box
-                          sx={{ display: "flex", alignItems: "center", gap: 2 }}
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 2,
+                            mb: 0.5,
+                          }}
                         >
                           <Typography variant="caption" color="text.secondary">
-                            {inquiry.projectName}
+                            {appointment.projectName}
                           </Typography>
                           <Typography
                             variant="caption"
                             sx={{ color: "#667eea", fontWeight: 600 }}
                           >
-                            {inquiry.flatType}
+                            {appointment.flatType}
+                          </Typography>
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                          }}
+                        >
+                          <Event sx={{ fontSize: "0.9rem", color: "#999" }} />
+                          <Typography variant="caption" color="text.secondary">
+                            {appointment.appointmentDate} at {appointment.appointmentTime}
                           </Typography>
                         </Box>
                       </Box>
                       <Chip
-                        label={inquiry.status.replace("-", " ").toUpperCase()}
+                        label={appointment.status.toUpperCase()}
                         size="small"
                         sx={{
                           backgroundColor: statusColor.bg,

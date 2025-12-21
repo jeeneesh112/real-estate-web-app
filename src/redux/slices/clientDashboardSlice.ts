@@ -50,6 +50,20 @@ export interface TopInquiry {
   priority: 'high' | 'medium' | 'low';
 }
 
+// Appointment Interface
+export interface Appointment {
+  id: number;
+  clientName: string;
+  clientEmail: string;
+  clientPhone: string;
+  projectName: string;
+  flatType: string;
+  appointmentDate: string;
+  appointmentTime: string;
+  status: 'scheduled' | 'completed' | 'cancelled' | 'rescheduled';
+  notes?: string;
+}
+
 // Property Performance Interface
 export interface PropertyPerformance {
   id: string;
@@ -76,6 +90,7 @@ interface ClientDashboardState {
   propertyPerformance: PropertyPerformance[];
   monthlySales: MonthlySale[];
   topInquiries: TopInquiry[];
+  upcomingAppointments: Appointment[];
   loading: boolean;
   error: string | null;
 }
@@ -295,6 +310,69 @@ const mockTopInquiries: TopInquiry[] = [
   },
 ];
 
+// Mock Upcoming Appointments data
+const mockUpcomingAppointments: Appointment[] = [
+  {
+    id: 1,
+    clientName: 'Alice Johnson',
+    clientEmail: 'alice.j@email.com',
+    clientPhone: '+91-9876543210',
+    projectName: 'Skyline Residency',
+    flatType: '3BHK',
+    appointmentDate: '2025-12-22',
+    appointmentTime: '10:00 AM',
+    status: 'UPCOMING',
+    notes: 'Customer wants to see north-facing units',
+  },
+  {
+    id: 2,
+    clientName: 'Bob Smith',
+    clientEmail: 'bob.smith@email.com',
+    clientPhone: '+91-8765432109',
+    projectName: 'Green Valley Apartments',
+    flatType: '2BHK',
+    appointmentDate: '2025-12-23',
+    appointmentTime: '2:30 PM',
+    status: 'UPCOMING',
+    notes: 'Site visit scheduled',
+  },
+  {
+    id: 3,
+    clientName: 'Carol White',
+    clientEmail: 'carol.w@email.com',
+    clientPhone: '+91-7654321098',
+    projectName: 'Tech Park Plaza',
+    flatType: '4BHK',
+    appointmentDate: '2025-12-24',
+    appointmentTime: '11:00 AM',
+    status: 'UPCOMING',
+    notes: 'First time visitor',
+  },
+  {
+    id: 4,
+    clientName: 'David Brown',
+    clientEmail: 'david.b@email.com',
+    clientPhone: '+91-6543210987',
+    projectName: 'Heritage Heights',
+    flatType: '3BHK',
+    appointmentDate: '2025-12-25',
+    appointmentTime: '4:00 PM',
+    status: 'UPCOMING',
+    notes: 'Follow-up appointment',
+  },
+  {
+    id: 5,
+    clientName: 'Emma Davis',
+    clientEmail: 'emma.d@email.com',
+    clientPhone: '+91-5432109876',
+    projectName: 'Skyline Residency',
+    flatType: '2BHK',
+    appointmentDate: '2025-12-26',
+    appointmentTime: '9:30 AM',
+    status: 'UPCOMING',
+  },
+];
+
 const initialState: ClientDashboardState = {
   kpis: mockKPIs,
   recentActivities: mockRecentActivities,
@@ -302,6 +380,7 @@ const initialState: ClientDashboardState = {
   propertyPerformance: mockPropertyPerformance,
   monthlySales: mockMonthlySales,
   topInquiries: mockTopInquiries,
+  upcomingAppointments: mockUpcomingAppointments,
   loading: false,
   error: null,
 };
@@ -361,4 +440,5 @@ export const getPropertyPerformance = (state: RootState): PropertyPerformance[] 
 export const getMonthlySales = (state: RootState): MonthlySale[] =>
   state.clientDashboard.monthlySales;
 export const getTopInquiries = (state: RootState): TopInquiry[] =>
-  state.clientDashboard.topInquiries;
+  state.clientDashboard.topInquiries;export const getUpcomingAppointments = (state: RootState): Appointment[] =>
+  state.clientDashboard.upcomingAppointments;
