@@ -203,7 +203,7 @@ export const BillingPage: React.FC = () => {
         rows={payments}
         loading={loading}
         defaultPageSize={10}
-        pageSizeOptions={[5, 10, 25, 50]}
+        pageSizeOptions={[10, 25, 50, 100]}
         onRowClick={handleRowClick}
         getRowId={(row) => row.id.toString()}
       />

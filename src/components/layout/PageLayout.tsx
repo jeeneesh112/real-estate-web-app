@@ -54,15 +54,15 @@ export const PageLayout = React.forwardRef<HTMLDivElement, PageLayoutProps>(
             overflow: 'hidden',
             backgroundColor: '#fff',
             border: '1px solid #f0f0f0',
-            mx: { xs: 1, sm: 2, md: 3 },
-            my: { xs: 1, sm: 2, md: 3 },
+            mx: { xs: 0.5, sm: 1, md: 1.5 },
+            my: { xs: 0.5, sm: 1, md: 1.5 },
           }}
         >
           {/* Header Section */}
           <Box
             sx={{
-              px: { xs: 2, sm: 3, md: 4 },
-              py: { xs: 2.5, sm: 3, md: 3.5 },
+              px: { xs: 1, sm: 1.5, md: 2 },
+              py: { xs: 1.25, sm: 1.5, md: 1.75 },
               backgroundColor: '#fafafa',
             }}
           >
@@ -120,8 +120,8 @@ export const PageLayout = React.forwardRef<HTMLDivElement, PageLayoutProps>(
           {/* Content Section */}
           <Box
             sx={{
-              px: { xs: 1, sm: 2, md: 3 },
-              py: { xs: 2, sm: 2.5, md: 3 },
+              px: { xs: 0.5, sm: 1, md: 1.5 },
+              py: { xs: 1, sm: 1.25, md: 1.5 },
             }}
           >
             {children}

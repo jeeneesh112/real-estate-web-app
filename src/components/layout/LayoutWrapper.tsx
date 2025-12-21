@@ -49,7 +49,7 @@ export const LayoutWrapper: React.FC = () => {
           <Box
             sx={{
               flex: 1,
-              p: { xs: 2, sm: 3, md: 4 },
+              p: { xs: 1, sm: 1.5, md: 2 },
               overflow: 'auto',
             }}
           >

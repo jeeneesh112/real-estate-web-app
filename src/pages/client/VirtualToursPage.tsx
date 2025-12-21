@@ -113,7 +113,7 @@ export const VirtualToursPage: React.FC = () => {
         rows={virtualTours}
         loading={false}
         defaultPageSize={10}
-        pageSizeOptions={[5, 10, 25]}
+        pageSizeOptions={[10, 25, 50]}
         getRowId={(row) => row.id}
       />
     </PageLayout>

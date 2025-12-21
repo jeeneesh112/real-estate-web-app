@@ -272,7 +272,7 @@ export const AppointmentsPage: React.FC = () => {
         rows={enrichedAppointments}
         loading={loading}
         defaultPageSize={10}
-        pageSizeOptions={[5, 10, 25, 50]}
+        pageSizeOptions={[10, 25, 50, 100]}
         onRowClick={handleRowClick}
         getRowId={(row) => String(row.id)}
       />
