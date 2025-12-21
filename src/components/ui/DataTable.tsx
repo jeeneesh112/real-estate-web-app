@@ -75,7 +75,7 @@ const DataTable = React.forwardRef(function DataTableInner<T = any>(
     columns,
     rows,
     loading = false,
-    pageSizeOptions = [5, 10, 25, 50],
+    pageSizeOptions = [10, 25, 50, 100],
     defaultPageSize = 10,
     onRowClick,
     getRowId = (_, index) => index,

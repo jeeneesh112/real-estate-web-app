@@ -180,7 +180,7 @@ export const ProjectsPage: React.FC = () => {
         color="primary"
         onClick={() => setOpenFormModal(true)}
         sx={{
-          borderRadius: '12px',
+          borderRadius: '4px',
           textTransform: 'none',
           fontSize: '0.95rem',
           fontWeight: 600,

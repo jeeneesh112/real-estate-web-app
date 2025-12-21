@@ -292,7 +292,7 @@ export const FormModal: React.FC<FormModalProps> = ({
             padding: '12px 14px',
           },
           '& .MuiFormLabel-root': {
-            fontWeight: 600,
+            fontWeight: 400,
             fontSize: '0.9rem',
             color: '#333',
             '&.Mui-focused': {
@@ -399,6 +399,7 @@ export const FormModal: React.FC<FormModalProps> = ({
               py: 1.5,
               fontSize: '1rem',
               fontWeight: 600,
+              borderRadius: 2,
               borderColor: '#e0e0e0',
               color: '#666',
               borderWidth: 2,
@@ -420,6 +421,7 @@ export const FormModal: React.FC<FormModalProps> = ({
               py: 1.5,
               fontSize: '1rem',
               fontWeight: 600,
+              borderRadius: 2,
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
               '&:hover': {
