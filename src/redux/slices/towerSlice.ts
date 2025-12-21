@@ -146,10 +146,22 @@ const towerSlice = createSlice({
     setTowers: (state, action: PayloadAction<Tower[]>) => {
       state.towers = action.payload;
     },
+    addTower: (state, action: PayloadAction<Omit<Tower, 'id' | 'created_at' | 'modified_at' | 'deleted_at'>>) => {
+      const nextNum = state.towers.length + 1;
+      const newId = `tower-${String(nextNum).padStart(3, '0')}`;
+      const now = new Date().toISOString();
+      state.towers.push({
+        id: newId,
+        created_at: now,
+        modified_at: now,
+        deleted_at: null,
+        ...action.payload,
+      });
+    },
   },
 });
 
-export const { setTowers } = towerSlice.actions;
+export const { setTowers, addTower } = towerSlice.actions;
 export default towerSlice.reducer;
 
 // Selectors

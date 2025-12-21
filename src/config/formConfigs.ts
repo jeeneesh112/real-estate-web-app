@@ -1,4 +1,4 @@
-import type { FormFieldConfig } from '../../components/ui/FormModal';
+import type { FormFieldConfig } from '../components/ui/FormModal';
 
 // Project form field configuration with all validations
 export const projectFormFields: FormFieldConfig[] = [
@@ -71,3 +71,120 @@ export const projectFormFields: FormFieldConfig[] = [
 ];
 
 export default projectFormFields;
+
+// Tower form field configuration (base; project options injected at runtime)
+export const towerFormFieldsBase: FormFieldConfig[] = [
+  {
+    name: 'project_id',
+    label: 'Project',
+    type: 'select',
+    required: true,
+    helperText: 'Select the project this tower belongs to',
+  },
+  {
+    name: 'name',
+    label: 'Tower Name',
+    type: 'text',
+    required: true,
+    placeholder: 'e.g., Tower A, North Wing',
+    minLength: 2,
+    maxLength: 100,
+  },
+  {
+    name: 'floors',
+    label: 'Floors',
+    type: 'number',
+    required: true,
+    placeholder: 'e.g., 24',
+    min: 1,
+    max: 100,
+    order: 1,
+    helperText: 'Total number of floors in the tower',
+  },
+  {
+    name: 'units_per_floor',
+    label: 'Units per Floor',
+    type: 'number',
+    required: true,
+    placeholder: 'e.g., 4',
+    min: 1,
+    max: 20,
+    order: 1,
+    helperText: 'Number of flats on each floor',
+  },
+];
+
+// Flat form field configuration (base; tower and project options injected at runtime)
+export const flatFormFieldsBase: FormFieldConfig[] = [
+  {
+    name: 'tower_id',
+    label: 'Tower',
+    type: 'select',
+    required: true,
+    helperText: 'Select the tower this flat belongs to',
+  },
+  {
+    name: 'flat_type',
+    label: 'Flat Type',
+    type: 'select',
+    required: true,
+    helperText: 'Select the flat configuration',
+    options: [
+      { label: '1BHK', value: '1BHK' },
+      { label: '2BHK', value: '2BHK' },
+      { label: '3BHK', value: '3BHK' },
+      { label: '4BHK', value: '4BHK' },
+    ],
+  },
+  {
+    name: 'floor',
+    label: 'Floor Number',
+    type: 'number',
+    required: true,
+    placeholder: 'e.g., 5',
+    min: 1,
+    max: 100,
+    order: 1,
+  },
+  {
+    name: 'size_sqft',
+    label: 'Area (sqft)',
+    type: 'number',
+    required: true,
+    placeholder: 'e.g., 1050',
+    min: 100,
+    order: 1,
+  },
+  {
+    name: 'price',
+    label: 'Sale Price (₹)',
+    type: 'number',
+    required: false,
+    placeholder: 'e.g., 5500000',
+    min: 0,
+    order: 2,
+    helperText: 'Leave empty if not for sale',
+  },
+  {
+    name: 'rent',
+    label: 'Monthly Rent (₹)',
+    type: 'number',
+    required: false,
+    placeholder: 'e.g., 50000',
+    min: 0,
+    order: 2,
+    helperText: 'Leave empty if not for rent',
+  },
+  {
+    name: 'status',
+    label: 'Status',
+    type: 'select',
+    required: true,
+    helperText: 'Select the current status',
+    options: [
+      { label: 'Available', value: 'available' },
+      { label: 'Sold', value: 'sold' },
+      { label: 'Rental', value: 'rental' },
+    ],
+  },
+];

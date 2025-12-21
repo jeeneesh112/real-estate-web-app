@@ -11,20 +11,28 @@ import {
   CheckCircle,
   Business,
 } from '@mui/icons-material';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { DataTable, type DataTableColumn } from '../../components/ui/DataTable';
 import { Stats, type StatItem } from '../../components/ui/Stats';
 import { TowerDetailModal } from '../../components/ui/TowerDetailModal';
 import { type Tower } from '../../redux/slices/towerSlice';
+import { addTower } from '../../redux/slices/towerSlice';
+import { FormModal, type FormFieldConfig } from '../../components/ui/FormModal';
+import { towerFormFieldsBase } from '../../config/formConfigs';
+import { useToast } from '../../hooks';
 import { i18n } from '../../i18n';
 
 export const TowersPage: React.FC = () => {
   const towers = useSelector((state: RootState) => state.tower.towers);
   const projects = useSelector((state: RootState) => state.project.projects);
+  const dispatch = useDispatch();
+  const toast = useToast();
   const [loading, setLoading] = useState(false);
   const [selectedTower, setSelectedTower] = useState<Tower | null>(null);
+  const [openFormModal, setOpenFormModal] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
 
   // Helper to get project name by ID
   const getProjectName = (projectId: string) => {
@@ -164,7 +172,7 @@ export const TowersPage: React.FC = () => {
       >
         {loading ? '⏹ Loading' : '▶ Demo'}
       </Button>
-      <Button variant="contained" color="primary">
+      <Button variant="contained" color="primary" onClick={() => setOpenFormModal(true)}>
         + New Tower
       </Button>
     </Stack>
@@ -208,6 +216,42 @@ export const TowersPage: React.FC = () => {
           }}
         />
       )}
+
+      {/* New Tower Form Modal */}
+      <FormModal
+        open={openFormModal}
+        title="Create New Tower"
+        fields={(towerFormFieldsBase as FormFieldConfig[]).map((f) =>
+          f.name === 'project_id'
+            ? {
+                ...f,
+                options: projects.map((p) => ({ label: p.name, value: p.id })),
+              }
+            : f
+        )}
+        onSubmit={async (values) => {
+          setFormLoading(true);
+          try {
+            const payload = {
+              project_id: String(values.project_id),
+              name: String(values.name),
+              image_id: null,
+              floors: Number(values.floors),
+              units_per_floor: Number(values.units_per_floor),
+              created_by: 'system',
+            };
+            dispatch(addTower(payload));
+            toast.success(`Tower "${payload.name}" created successfully`);
+            setOpenFormModal(false);
+          } finally {
+            setFormLoading(false);
+          }
+        }}
+        onClose={() => setOpenFormModal(false)}
+        loading={formLoading}
+        maxWidth="sm"
+        submitLabel="Create"
+      />
     </PageLayout>
   );
 };

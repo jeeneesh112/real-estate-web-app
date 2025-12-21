@@ -1049,10 +1049,26 @@ const flatSlice = createSlice({
     setFlats: (state, action: PayloadAction<Flat[]>) => {
       state.flats = action.payload;
     },
+    addFlat: (
+      state,
+      action: PayloadAction<Omit<Flat, 'id' | 'created_at' | 'modified_at' | 'deleted_at' | 'gallery_json'>>
+    ) => {
+      const newId = `flat-${String(state.flats.length + 1).padStart(3, '0')}`;
+      const now = new Date().toISOString();
+      const newFlat: Flat = {
+        ...action.payload,
+        id: newId,
+        gallery_json: [],
+        created_at: now,
+        modified_at: now,
+        deleted_at: null,
+      };
+      state.flats.push(newFlat);
+    },
   },
 });
 
-export const { selectFlat, setFlats } = flatSlice.actions;
+export const { selectFlat, setFlats, addFlat } = flatSlice.actions;
 export default flatSlice.reducer;
 
 // Selectors

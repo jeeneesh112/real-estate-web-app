@@ -12,20 +12,27 @@ import {
   Sell,
   Key,
 } from '@mui/icons-material';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { DataTable, type DataTableColumn } from '../../components/ui/DataTable';
 import { Stats, type StatItem } from '../../components/ui/Stats';
-import { type Flat } from '../../redux/slices/flatSlice';
+import { type Flat, addFlat } from '../../redux/slices/flatSlice';
+import { FormModal, type FormFieldConfig } from '../../components/ui/FormModal';
+import { flatFormFieldsBase } from '../../config/formConfigs';
+import { useToast } from '../../hooks';
 import { i18n } from '../../i18n';
 
 export const FlatsPage: React.FC = () => {
   const flats = useSelector((state: RootState) => state.flat.flats);
   const towers = useSelector((state: RootState) => state.tower.towers);
   const projects = useSelector((state: RootState) => state.project.projects);
+  const dispatch = useDispatch();
+  const toast = useToast();
   const [loading, setLoading] = useState(false);
   const [selectedFlat, setSelectedFlat] = useState<Flat | null>(null);
+  const [openFormModal, setOpenFormModal] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
 
   // Helper to get tower and project names
   const getTowerName = (towerId: string) => {
@@ -278,7 +285,7 @@ export const FlatsPage: React.FC = () => {
       >
         {loading ? '⏹ Loading' : '▶ Demo'}
       </Button>
-      <Button variant="contained" color="primary">
+      <Button variant="contained" color="primary" onClick={() => setOpenFormModal(true)}>
         + New Flat
       </Button>
     </Stack>
@@ -321,7 +328,7 @@ export const FlatsPage: React.FC = () => {
       )}
 
       {/* DataTable */}
-      <DataTable<Flat>
+      <DataTable
         columns={columns}
         rows={flats}
         loading={loading}
@@ -329,6 +336,48 @@ export const FlatsPage: React.FC = () => {
         pageSizeOptions={[5, 10, 25, 50]}
         onRowClick={handleRowClick}
         getRowId={(row) => row.id}
+      />
+
+      {/* New Flat Form Modal */}
+      <FormModal
+        open={openFormModal}
+        title="Create New Flat"
+        fields={(flatFormFieldsBase as FormFieldConfig[]).map((f) =>
+          f.name === 'tower_id'
+            ? {
+                ...f,
+                options: towers.map((t) => ({
+                  label: `${t.name} (${projects.find((p) => p.id === t.project_id)?.name || 'Unknown'})`,
+                  value: t.id,
+                })),
+              }
+            : f
+        )}
+        onSubmit={async (values) => {
+          setFormLoading(true);
+          try {
+            const tower = towers.find((t) => t.id === values.tower_id);
+            const payload = {
+              tower_id: String(values.tower_id),
+              flat_type: String(values.flat_type),
+              floor: Number(values.floor),
+              size_sqft: Number(values.size_sqft),
+              price: values.price ? Number(values.price) : null,
+              rent: values.rent ? Number(values.rent) : null,
+              status: String(values.status) as 'sold' | 'rental' | 'available',
+              created_by: 'system',
+            };
+            dispatch(addFlat(payload));
+            toast.success(`Flat (${payload.flat_type}) created in ${tower?.name || 'Tower'}`);
+            setOpenFormModal(false);
+          } finally {
+            setFormLoading(false);
+          }
+        }}
+        onClose={() => setOpenFormModal(false)}
+        loading={formLoading}
+        maxWidth="sm"
+        submitLabel="Create"
       />
     </PageLayout>
   );

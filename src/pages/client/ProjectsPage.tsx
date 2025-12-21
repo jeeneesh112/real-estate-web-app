@@ -13,15 +13,15 @@ import {
   CheckCircle,
   AddCircleOutline,
 } from '@mui/icons-material';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { DataTable, type DataTableColumn } from '../../components/ui/DataTable';
 import { Stats, type StatItem } from '../../components/ui/Stats';
-import { FormModal, type FormFieldConfig } from '../../components/ui/FormModal';
+import { FormModal } from '../../components/ui/FormModal';
 import { type Project } from '../../redux/slices/projectSlice';
 import { projectFormFields } from '../../config/formConfigs';
-import { useToast } from '../../hooks/useToast';
+import { useToast } from '../../hooks';
 import { i18n } from '../../i18n';
 
 export const ProjectsPage: React.FC = () => {
@@ -205,7 +205,7 @@ export const ProjectsPage: React.FC = () => {
             borderRadius: 1,
             borderLeft: '4px solid',
             borderLeftColor: 'primary.main',
-          }}
+          } as any}
         >
           <Typography variant="body2">
             <strong>Selected Project:</strong> {selectedProject.name} ({selectedProject.city})
@@ -214,7 +214,7 @@ export const ProjectsPage: React.FC = () => {
       )}
 
       {/* DataTable */}
-      <DataTable<Project>
+      <DataTable
         columns={columns}
         rows={projects}
         loading={loading}
