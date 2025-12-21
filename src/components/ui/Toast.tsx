@@ -34,23 +34,27 @@ export const ToastContext = createContext<ToastContextType | undefined>(undefine
 
 const toastConfig = {
   success: {
-    bgColor: '#10b981',
+    bgColor: '#000',
     icon: CheckCircle,
+    iconColor: '#10b981',
     label: 'Success',
   },
   error: {
-    bgColor: '#ef4444',
+    bgColor: '#000',
     icon: Error,
+    iconColor: '#ef4444',
     label: 'Error',
   },
   warning: {
-    bgColor: '#f59e0b',
+    bgColor: '#000',
     icon: Warning,
+    iconColor: '#f59e0b',
     label: 'Warning',
   },
   info: {
-    bgColor: '#3b82f6',
+    bgColor: '#000',
     icon: Info,
+    iconColor: '#3b82f6',
     label: 'Info',
   },
 };
@@ -86,19 +90,20 @@ export const ToastItem: React.FC<ToastProps> = ({
         sx={{
           display: 'flex',
           alignItems: 'center',
-          gap: 2,
+          gap: 2.5,
           backgroundColor: config.bgColor,
           color: '#fff',
-          padding: '12px 16px',
-          borderRadius: 1.5,
-          marginBottom: 1.5,
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-          minWidth: '300px',
-          maxWidth: '400px',
+          padding: '14px 20px',
+          borderRadius: 2.5,
+          marginBottom: 2,
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
+          minWidth: '340px',
+          maxWidth: '420px',
           animation: 'slideIn 0.3s ease-out',
+          backdropFilter: 'blur(10px)',
           '@keyframes slideIn': {
             from: {
-              transform: 'translateX(400px)',
+              transform: 'translateX(450px)',
               opacity: 0,
             },
             to: {
@@ -108,13 +113,15 @@ export const ToastItem: React.FC<ToastProps> = ({
           },
         }}
       >
-        <Icon sx={{ fontSize: '1.5rem', flexShrink: 0 }} />
+        <Icon sx={{ fontSize: '1.4rem', flexShrink: 0, color: config.iconColor }} />
         <Typography
           variant="body2"
           sx={{
             fontWeight: 500,
             flex: 1,
             wordBreak: 'break-word',
+            fontSize: '0.95rem',
+            lineHeight: 1.5,
           }}
         >
           {message}
@@ -124,10 +131,14 @@ export const ToastItem: React.FC<ToastProps> = ({
           onClick={handleClose}
           sx={{
             color: '#fff',
-            padding: 0.5,
+            padding: 0.25,
+            minWidth: 28,
+            minHeight: 28,
+            flexShrink: 0,
             '&:hover': {
               backgroundColor: 'rgba(255, 255, 255, 0.2)',
             },
+            transition: 'all 0.2s ease-in-out',
           }}
         >
           <Close fontSize="small" />
@@ -207,8 +218,8 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
       <Box
         sx={{
           position: 'fixed',
-          top: 20,
-          right: 20,
+          top: 24,
+          right: 24,
           zIndex: 9999,
           pointerEvents: 'none',
         }}
@@ -217,7 +228,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 0,
+            gap: 1,
             pointerEvents: 'auto',
           }}
         >

@@ -200,27 +200,153 @@ export const ChangeStatusModal: React.FC<ChangeStatusModalProps> = ({
       </Dialog>
 
       {/* Inline Confirmation Dialog */}
-      <Dialog open={confirmingStatus !== null} onClose={() => setConfirmingStatus(null)} maxWidth="xs" fullWidth>
-        <DialogTitle sx={{ fontSize: '1.1rem', fontWeight: 600 }}>
-          Confirm Status Change
-        </DialogTitle>
-        <DialogContent sx={{ pt: 2 }}>
-          <Box>
-            {flatId && flatType && (
-              <Typography variant="body2" sx={{ mb: 2 }}>
-                Flat: <strong>{flatId}</strong> ({flatType})
-              </Typography>
-            )}
-            <Typography variant="body2">
-              Update status to <strong>{confirmingStatus ? getStatusLabel(confirmingStatus) : ''}</strong>?
+      <Dialog 
+        open={confirmingStatus !== null} 
+        onClose={() => setConfirmingStatus(null)} 
+        maxWidth="xs" 
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
+            border: '1px solid rgba(0, 0, 0, 0.08)',
+            overflow: 'hidden',
+          },
+        }}
+      >
+        <DialogContent
+          sx={{
+            pt: 3.5,
+            pb: 3,
+            px: 3,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+          }}
+        >
+          {/* Status Icon */}
+          {confirmingStatus && (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 70,
+                height: 70,
+                borderRadius: '50%',
+                backgroundColor: confirmingStatus === 'sold' 
+                  ? 'rgba(25, 103, 210, 0.1)' 
+                  : confirmingStatus === 'rental'
+                  ? 'rgba(255, 152, 0, 0.1)'
+                  : 'rgba(76, 175, 80, 0.1)',
+                color: confirmingStatus === 'sold' 
+                  ? '#1967d2' 
+                  : confirmingStatus === 'rental'
+                  ? '#ff9800'
+                  : '#4caf50',
+                mb: 2,
+                fontSize: '2rem',
+              }}
+            >
+              {confirmingStatus === 'sold' ? (
+                <BlockOutlined sx={{ fontSize: '2rem' }} />
+              ) : confirmingStatus === 'rental' ? (
+                <VpnKey sx={{ fontSize: '2rem' }} />
+              ) : (
+                <CheckCircle sx={{ fontSize: '2rem' }} />
+              )}
+            </Box>
+          )}
+
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 700,
+              fontSize: '1.2rem',
+              mb: 1.5,
+              color: 'text.primary',
+            }}
+          >
+            Confirm Status Change
+          </Typography>
+
+          {flatId && flatType && (
+            <Typography variant="body2" sx={{ mb: 1, color: 'text.secondary' }}>
+              Flat: <strong style={{ color: '#000' }}>{flatId}</strong> ({flatType})
             </Typography>
-          </Box>
+          )}
+          
+          <Typography 
+            variant="body1"
+            sx={{
+              color: 'text.secondary',
+              lineHeight: 1.6,
+              fontSize: '0.95rem',
+            }}
+          >
+            Update status to <strong style={{ color: '#000' }}>{confirmingStatus ? getStatusLabel(confirmingStatus) : ''}</strong>?
+          </Typography>
         </DialogContent>
-        <DialogActions sx={{ p: 2, borderTop: '1px solid rgba(0, 0, 0, 0.12)' }}>
-          <Button onClick={() => setConfirmingStatus(null)} disabled={loading}>
+
+        <DialogActions
+          sx={{
+            p: 2.5,
+            gap: 1.5,
+            borderTop: '1px solid rgba(0, 0, 0, 0.08)',
+            backgroundColor: 'rgba(0, 0, 0, 0.01)',
+            flexDirection: 'row',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Button 
+            onClick={() => setConfirmingStatus(null)} 
+            variant="outlined"
+            disabled={loading}
+            sx={{
+              textTransform: 'none',
+              fontSize: '0.95rem',
+              fontWeight: 600,
+              borderRadius: 2,
+              py: 1.2,
+              px: 3,
+              minWidth: 120,
+              borderColor: 'rgba(0, 0, 0, 0.15)',
+              color: 'text.primary',
+              transition: 'all 0.2s ease-in-out',
+              '&:hover': {
+                borderColor: 'rgba(0, 0, 0, 0.25)',
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+              },
+            }}
+          >
             Cancel
           </Button>
-          <Button onClick={handleConfirmUpdate} variant="contained" color="primary" disabled={loading}>
+          <Button 
+            onClick={handleConfirmUpdate} 
+            variant="contained" 
+            color="primary" 
+            disabled={loading}
+            sx={{
+              textTransform: 'none',
+              fontSize: '0.95rem',
+              fontWeight: 600,
+              borderRadius: 2,
+              py: 1.2,
+              px: 3,
+              minWidth: 140,
+              boxShadow: '0 6px 20px rgba(25, 103, 210, 0.4)',
+              transition: 'all 0.2s ease-in-out',
+              '&:hover': {
+                boxShadow: '0 10px 30px rgba(25, 103, 210, 0.5)',
+                transform: 'translateY(-2px)',
+              },
+              '&:active': {
+                transform: 'translateY(0)',
+              },
+            }}
+          >
             Yes, Update
           </Button>
         </DialogActions>
