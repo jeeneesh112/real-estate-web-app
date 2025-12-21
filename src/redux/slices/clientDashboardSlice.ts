@@ -77,10 +77,12 @@ export interface PropertyPerformance {
 
 // Monthly Sales Interface
 export interface MonthlySale {
-  month: string;
+  year: number;
+  month: string; // Jan, Feb, ...
   inquiries: number;
-  appointments: number;
-  bookings: number;
+  appointments: number; // total appointments
+  completedAppointments: number; // completed appointments
+  virtualTours: number;
 }
 
 interface ClientDashboardState {
@@ -109,16 +111,26 @@ const mockKPIs: DashboardKPI[] = [
   },
   {
     id: 'kpi-2',
-    label: 'Pending Appointments',
+    label: 'Total Appointments',
     value: 45,
     unit: 'this week',
     change: 8.3,
     changeType: 'increase',
     icon: 'Calendar',
-    color: '#f093fb',
+    color: '#4facfe',
   },
   {
     id: 'kpi-3',
+    label: 'Completed Appointments',
+    value: 32,
+    unit: 'this week',
+    change: 5.4,
+    changeType: 'increase',
+    icon: 'CheckCircle',
+    color: '#43e97b',
+  },
+  {
+    id: 'kpi-4',
     label: 'Conversion Rate',
     value: '28.5%',
     unit: 'avg',
@@ -127,16 +139,7 @@ const mockKPIs: DashboardKPI[] = [
     icon: 'TrendingUp',
     color: '#4facfe',
   },
-  {
-    id: 'kpi-4',
-    label: 'Revenue Generated',
-    value: '₹2.5Cr',
-    unit: 'this quarter',
-    change: 15.8,
-    changeType: 'increase',
-    icon: 'DollarSign',
-    color: '#43e97b',
-  },
+  // Removed Revenue KPI per requirements
 ];
 
 // Mock Recent Activities
@@ -246,14 +249,34 @@ const mockPropertyPerformance: PropertyPerformance[] = [
   },
 ];
 
-// Mock Monthly Sales
+// Mock Monthly Sales with Virtual Tours and full year data
 const mockMonthlySales: MonthlySale[] = [
-  { month: 'Jan', inquiries: 156, appointments: 78, bookings: 28 },
-  { month: 'Feb', inquiries: 178, appointments: 85, bookings: 32 },
-  { month: 'Mar', inquiries: 142, appointments: 65, bookings: 24 },
-  { month: 'Apr', inquiries: 198, appointments: 92, bookings: 38 },
-  { month: 'May', inquiries: 215, appointments: 105, bookings: 42 },
-  { month: 'Jun', inquiries: 189, appointments: 88, bookings: 35 },
+  // 2025
+  { year: 2025, month: 'Jan', inquiries: 156, appointments: 78, completedAppointments: 50, virtualTours: 120 },
+  { year: 2025, month: 'Feb', inquiries: 178, appointments: 85, completedAppointments: 54, virtualTours: 130 },
+  { year: 2025, month: 'Mar', inquiries: 142, appointments: 65, completedAppointments: 40, virtualTours: 110 },
+  { year: 2025, month: 'Apr', inquiries: 198, appointments: 92, completedAppointments: 60, virtualTours: 150 },
+  { year: 2025, month: 'May', inquiries: 215, appointments: 105, completedAppointments: 68, virtualTours: 165 },
+  { year: 2025, month: 'Jun', inquiries: 189, appointments: 88, completedAppointments: 56, virtualTours: 140 },
+  { year: 2025, month: 'Jul', inquiries: 176, appointments: 82, completedAppointments: 52, virtualTours: 135 },
+  { year: 2025, month: 'Aug', inquiries: 201, appointments: 99, completedAppointments: 64, virtualTours: 160 },
+  { year: 2025, month: 'Sep', inquiries: 187, appointments: 91, completedAppointments: 58, virtualTours: 145 },
+  { year: 2025, month: 'Oct', inquiries: 194, appointments: 96, completedAppointments: 61, virtualTours: 152 },
+  { year: 2025, month: 'Nov', inquiries: 205, appointments: 104, completedAppointments: 66, virtualTours: 170 },
+  { year: 2025, month: 'Dec', inquiries: 198, appointments: 97, completedAppointments: 62, virtualTours: 158 },
+  // 2024 (sample)
+  { year: 2024, month: 'Jan', inquiries: 132, appointments: 64, completedAppointments: 41, virtualTours: 100 },
+  { year: 2024, month: 'Feb', inquiries: 145, appointments: 70, completedAppointments: 45, virtualTours: 110 },
+  { year: 2024, month: 'Mar', inquiries: 138, appointments: 62, completedAppointments: 39, virtualTours: 95 },
+  { year: 2024, month: 'Apr', inquiries: 160, appointments: 75, completedAppointments: 48, virtualTours: 120 },
+  { year: 2024, month: 'May', inquiries: 174, appointments: 81, completedAppointments: 52, virtualTours: 130 },
+  { year: 2024, month: 'Jun', inquiries: 168, appointments: 78, completedAppointments: 50, virtualTours: 118 },
+  { year: 2024, month: 'Jul', inquiries: 159, appointments: 73, completedAppointments: 47, virtualTours: 112 },
+  { year: 2024, month: 'Aug', inquiries: 182, appointments: 88, completedAppointments: 57, virtualTours: 138 },
+  { year: 2024, month: 'Sep', inquiries: 170, appointments: 80, completedAppointments: 52, virtualTours: 125 },
+  { year: 2024, month: 'Oct', inquiries: 176, appointments: 85, completedAppointments: 55, virtualTours: 132 },
+  { year: 2024, month: 'Nov', inquiries: 183, appointments: 89, completedAppointments: 58, virtualTours: 140 },
+  { year: 2024, month: 'Dec', inquiries: 175, appointments: 83, completedAppointments: 54, virtualTours: 128 },
 ];
 
 // Mock Top Inquiries
@@ -321,7 +344,7 @@ const mockUpcomingAppointments: Appointment[] = [
     flatType: '3BHK',
     appointmentDate: '2025-12-22',
     appointmentTime: '10:00 AM',
-    status: 'UPCOMING',
+    status: 'scheduled',
     notes: 'Customer wants to see north-facing units',
   },
   {
@@ -333,7 +356,7 @@ const mockUpcomingAppointments: Appointment[] = [
     flatType: '2BHK',
     appointmentDate: '2025-12-23',
     appointmentTime: '2:30 PM',
-    status: 'UPCOMING',
+    status: 'scheduled',
     notes: 'Site visit scheduled',
   },
   {
@@ -345,7 +368,7 @@ const mockUpcomingAppointments: Appointment[] = [
     flatType: '4BHK',
     appointmentDate: '2025-12-24',
     appointmentTime: '11:00 AM',
-    status: 'UPCOMING',
+    status: 'scheduled',
     notes: 'First time visitor',
   },
   {
@@ -357,7 +380,7 @@ const mockUpcomingAppointments: Appointment[] = [
     flatType: '3BHK',
     appointmentDate: '2025-12-25',
     appointmentTime: '4:00 PM',
-    status: 'UPCOMING',
+    status: 'scheduled',
     notes: 'Follow-up appointment',
   },
   {
@@ -369,7 +392,7 @@ const mockUpcomingAppointments: Appointment[] = [
     flatType: '2BHK',
     appointmentDate: '2025-12-26',
     appointmentTime: '9:30 AM',
-    status: 'UPCOMING',
+    status: 'scheduled',
   },
 ];
 

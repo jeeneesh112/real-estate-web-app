@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Box,
   Card,
@@ -9,6 +9,9 @@ import {
   LinearProgress,
   Stack,
   Button,
+  Select,
+  MenuItem,
+  Tooltip,
 } from "@mui/material";
 import {
   TrendingUp,
@@ -61,31 +64,38 @@ const DashboardKPICard: React.FC<{
     <Card
       sx={{
         height: "100%",
-        background: `linear-gradient(135deg, ${color}15 0%, ${color}05 100%)`,
-        border: `1px solid ${color}30`,
         borderRadius: "16px",
         position: "relative",
         overflow: "hidden",
       }}
+      style={{
+        background: `linear-gradient(135deg, ${color}15 0%, ${color}05 100%)`,
+        border: `1px solid ${color}30`,
+      }}
     >
-      <Box
-        sx={{
+      <div
+        style={{
           position: "absolute",
           top: 0,
           right: 0,
           width: "120px",
           height: "120px",
-          backgroundColor: color,
           opacity: 0.05,
           borderRadius: "50%",
           transform: "translate(50%, -50%)",
+          backgroundColor: color,
         }}
       />
       <CardContent sx={{ position: "relative" }}>
         <Typography variant="body2" color="text.secondary" gutterBottom>
           {label}
         </Typography>
-        <Typography variant="h3" fontWeight="700" sx={{ mb: 1, color }}>
+        <Typography
+          variant="h3"
+          fontWeight="700"
+          sx={{ mb: 1 }}
+          style={{ color }}
+        >
           {value}
         </Typography>
         {unit && (
@@ -134,10 +144,51 @@ export const DashboardPage: React.FC = () => {
   const monthlySales = useSelector(getMonthlySales);
   const upcomingAppointments = useSelector(getUpcomingAppointments);
 
-  const maxMonthlySales = useMemo(
-    () => Math.max(...monthlySales.map((m) => m.inquiries)),
+  // Year filter and month filtering up to current month
+  const currentYear = new Date().getFullYear();
+  const [selectedYear, setSelectedYear] = useState<number>(currentYear);
+  const monthOrder = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const availableYears = useMemo(
+    () => Array.from(new Set(monthlySales.map((m) => m.year))).sort(),
     [monthlySales]
   );
+  const currentMonthIndex = new Date().getMonth(); // 0-11
+  const filteredMonths = useMemo(() => {
+    const months = monthlySales
+      .filter((m) => m.year === selectedYear)
+      .sort(
+        (a, b) => monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month)
+      );
+    if (selectedYear === currentYear) {
+      return months.filter(
+        (m) => monthOrder.indexOf(m.month) <= currentMonthIndex
+      );
+    }
+    return months;
+  }, [monthlySales, selectedYear]);
+
+  const maxMonthlySales = useMemo(() => {
+    const values = filteredMonths.flatMap((m) => [
+      m.inquiries,
+      m.appointments,
+      m.completedAppointments,
+      m.virtualTours,
+    ]);
+    return values.length ? Math.max(...values) : 0;
+  }, [filteredMonths]);
 
   return (
     <PageLayout
@@ -168,7 +219,7 @@ export const DashboardPage: React.FC = () => {
                   alignItems: "center",
                   justifyContent: "space-between",
                   mb: 2,
-                }}
+                } as any}
               >
                 <Typography variant="h6" fontWeight="600">
                   Recent Activities
@@ -364,23 +415,48 @@ export const DashboardPage: React.FC = () => {
         <Grid item xs={12}>
           <Card sx={{ borderRadius: "16px" }}>
             <CardContent>
-              <Typography variant="h6" fontWeight="600" sx={{ mb: 2 }}>
-                Monthly Trends
-              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: 2,
+                }}
+              >
+                <Typography variant="h6" fontWeight="600">
+                  Monthly Trends
+                </Typography>
+                <Select
+                  size="small"
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(Number(e.target.value))}
+                  sx={{ minWidth: 120 }}
+                >
+                  {availableYears.map((y) => (
+                    <MenuItem key={y} value={y}>
+                      {y}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
 
               <Box
                 sx={{ display: "flex", justifyContent: "space-around", gap: 2 }}
               >
-                {monthlySales.map((month) => (
-                  <Box
+                {filteredMonths.map((month) => (
+                  <Tooltip
                     key={month.month}
-                    sx={{
-                      flex: 1,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
+                    title={`${month.month}: Inquiries ${month.inquiries} • Total Appointments ${month.appointments} • Completed Appointments ${month.completedAppointments} • Virtual Tours ${month.virtualTours}`}
+                    placement="top"
                   >
+                    <Box
+                      sx={{
+                        flex: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
                     <Box
                       sx={{
                         display: "flex",
@@ -395,7 +471,9 @@ export const DashboardPage: React.FC = () => {
                         sx={{
                           width: "8px",
                           height: `${
-                            (month.inquiries / maxMonthlySales) * 100
+                            maxMonthlySales
+                              ? (month.inquiries / maxMonthlySales) * 100
+                              : 0
                           }%`,
                           backgroundColor: "#667eea",
                           borderRadius: "4px 4px 0 0",
@@ -406,12 +484,14 @@ export const DashboardPage: React.FC = () => {
                         }}
                         title={`Inquiries: ${month.inquiries}`}
                       />
-                      {/* Appointments Bar */}
+                      {/* Total Appointments Bar */}
                       <Box
                         sx={{
                           width: "8px",
                           height: `${
-                            (month.appointments / maxMonthlySales) * 100
+                            maxMonthlySales
+                              ? (month.appointments / maxMonthlySales) * 100
+                              : 0
                           }%`,
                           backgroundColor: "#4facfe",
                           borderRadius: "4px 4px 0 0",
@@ -420,14 +500,16 @@ export const DashboardPage: React.FC = () => {
                             opacity: 0.8,
                           },
                         }}
-                        title={`Appointments: ${month.appointments}`}
+                        title={`Total Appointments: ${month.appointments}`}
                       />
-                      {/* Bookings Bar */}
+                      {/* Completed Appointments Bar */}
                       <Box
                         sx={{
                           width: "8px",
                           height: `${
-                            (month.bookings / maxMonthlySales) * 100
+                            maxMonthlySales
+                              ? (month.completedAppointments / maxMonthlySales) * 100
+                              : 0
                           }%`,
                           backgroundColor: "#43e97b",
                           borderRadius: "4px 4px 0 0",
@@ -436,17 +518,36 @@ export const DashboardPage: React.FC = () => {
                             opacity: 0.8,
                           },
                         }}
-                        title={`Bookings: ${month.bookings}`}
+                        title={`Completed Appointments: ${month.completedAppointments}`}
+                      />
+                      {/* Virtual Tours Bar */}
+                      <Box
+                        sx={{
+                          width: "8px",
+                          height: `${
+                            maxMonthlySales
+                              ? (month.virtualTours / maxMonthlySales) * 100
+                              : 0
+                          }%`,
+                          backgroundColor: "#f093fb",
+                          borderRadius: "4px 4px 0 0",
+                          transition: "all 0.3s ease",
+                          "&:hover": {
+                            opacity: 0.8,
+                          },
+                        }}
+                        title={`Virtual Tours: ${month.virtualTours}`}
                       />
                     </Box>
-                    <Typography
-                      variant="caption"
-                      fontWeight="600"
-                      color="text.secondary"
-                    >
-                      {month.month}
-                    </Typography>
-                  </Box>
+                      <Typography
+                        variant="caption"
+                        fontWeight="600"
+                        color="text.secondary"
+                      >
+                        {month.month}
+                      </Typography>
+                    </Box>
+                  </Tooltip>
                 ))}
               </Box>
 
@@ -479,7 +580,7 @@ export const DashboardPage: React.FC = () => {
                       borderRadius: "2px",
                     }}
                   />
-                  <Typography variant="caption">Appointments</Typography>
+                  <Typography variant="caption">Total Appointments</Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <Box
@@ -490,7 +591,18 @@ export const DashboardPage: React.FC = () => {
                       borderRadius: "2px",
                     }}
                   />
-                  <Typography variant="caption">Bookings</Typography>
+                  <Typography variant="caption">Completed Appointments</Typography>
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <Box
+                    sx={{
+                      width: 12,
+                      height: 12,
+                      backgroundColor: "#f093fb",
+                      borderRadius: "2px",
+                    }}
+                  />
+                  <Typography variant="caption">Virtual Tours</Typography>
                 </Box>
               </Box>
             </CardContent>
