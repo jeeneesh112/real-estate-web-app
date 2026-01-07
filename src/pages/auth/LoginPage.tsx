@@ -1,25 +1,24 @@
 import { useState } from 'react';
 import {
-  Container,
-  Paper,
   TextField,
   Button,
   Typography,
   Box,
   Alert,
   Stack,
-  Chip,
+  Container,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginSuccess, type User, type ClientProfile } from '../../redux/slices/authSlice';
 import { i18n } from '../../i18n';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [selectedDemo, setSelectedDemo] = useState<string | null>(null);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -92,16 +91,10 @@ export const LoginPage: React.FC = () => {
     },
   ];
 
-  const handleDemoSelect = (account: typeof demoAccounts[0]) => {
-    setSelectedDemo(account.id);
-    setEmail(account.email);
-    setPassword(account.password);
-    setError('');
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     try {
       const account = demoAccounts.find(
@@ -110,6 +103,7 @@ export const LoginPage: React.FC = () => {
 
       if (!account) {
         setError(i18n.t('auth.invalidCredentials'));
+        setLoading(false);
         return;
       }
 
@@ -120,91 +114,232 @@ export const LoginPage: React.FC = () => {
       navigate(account.redirectTo);
     } catch (err) {
       setError(i18n.t('auth.invalidCredentials'));
+      setLoading(false);
     }
   };
 
   return (
-    <Container maxWidth="sm">
+    <Box sx={{ display: 'flex', height: '100vh', width: '100%' }}>
+      {/* Left Side - Image & Branding */}
       <Box
         sx={{
-          marginTop: 8,
+          flex: 1,
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          justifyContent: 'center',
+          color: '#fff',
+          padding: 4,
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: '-50%',
+            right: '-20%',
+            width: '500px',
+            height: '500px',
+            borderRadius: '50%',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          },
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            bottom: '-30%',
+            left: '-10%',
+            width: '400px',
+            height: '400px',
+            borderRadius: '50%',
+            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+          },
         }}
       >
-        <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
-          <Typography component="h1" variant="h4" align="center" gutterBottom>
-            {i18n.t('auth.loginTitle')}
+        <Box sx={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: 500 }}>
+          <Box
+            sx={{
+              width: 100,
+              height: 100,
+              borderRadius: '50%',
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 2rem',
+              backdropFilter: 'blur(10px)',
+            }}
+          >
+            <Typography variant="h2" sx={{ fontWeight: 800 }}>
+              🏢
+            </Typography>
+          </Box>
+          <Typography variant="h3" sx={{ fontWeight: 700, mb: 2 }}>
+            RealEstate Hub
           </Typography>
-          <Typography variant="body2" align="center" color="text.secondary" sx={{ mb: 3 }}>
-            {i18n.t('auth.loginSubtitle')}
+          <Typography variant="h6" sx={{ fontWeight: 400, opacity: 0.9, lineHeight: 1.6 }}>
+            Discover, Explore & Invest in Premium Properties. Your Dream Home Awaits!
           </Typography>
+          <Stack direction="row" spacing={2} sx={{ mt: 4, justifyContent: 'center' }}>
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h5" sx={{ fontWeight: 700 }}>500+</Typography>
+              <Typography variant="body2" sx={{ opacity: 0.8 }}>Properties</Typography>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h5" sx={{ fontWeight: 700 }}>50K+</Typography>
+              <Typography variant="body2" sx={{ opacity: 0.8 }}>Happy Users</Typography>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="h5" sx={{ fontWeight: 700 }}>24/7</Typography>
+              <Typography variant="body2" sx={{ opacity: 0.8 }}>Support</Typography>
+            </Box>
+          </Stack>
+        </Box>
+      </Box>
 
-          <Alert severity="info" sx={{ mb: 2, fontSize: '0.85rem' }}>
-            <strong>Quick Login - Click a demo account:</strong><br />
-          </Alert>
-
-          <Stack direction="row" spacing={1} sx={{ mb: 3, justifyContent: 'center', flexWrap: 'wrap' }}>
-            {demoAccounts.map((account) => (
-              <Chip
-                key={account.id}
-                label={account.label}
-                onClick={() => handleDemoSelect(account)}
-                color={selectedDemo === account.id ? 'primary' : 'default'}
-                variant={selectedDemo === account.id ? 'filled' : 'outlined'}
+      {/* Right Side - Login Form */}
+      <Box
+        sx={{
+          flex: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 4,
+          backgroundColor: '#fff',
+        }}
+      >
+        <Container maxWidth="sm">
+          <Box sx={{ width: '100%' }}>
+            {/* Header */}
+            <Box sx={{ textAlign: 'center', mb: 4 }}>
+              <Box
                 sx={{
-                  fontWeight: selectedDemo === account.id ? 700 : 500,
-                  cursor: 'pointer',
+                  width: 60,
+                  height: 60,
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 1.5rem',
+                  boxShadow: '0 8px 24px rgba(102, 126, 234, 0.3)',
+                }}
+              >
+                <LockOutlinedIcon sx={{ color: '#fff', fontSize: '2rem' }} />
+              </Box>
+              <Typography variant="h4" sx={{ fontWeight: 700, color: '#1f2937', mb: 0.5 }}>
+                Welcome Back
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                Sign in to access your property portfolio
+              </Typography>
+            </Box>
+
+            {/* Demo Accounts Info */}
+            <Alert severity="info" sx={{ mb: 3, backgroundColor: '#f0f9ff', borderColor: '#0284c7' }}>
+              <Typography variant="caption" sx={{ fontWeight: 600 }}>
+                Demo Credentials:
+              </Typography>
+              <Typography variant="caption" display="block" sx={{ mt: 0.5, fontSize: '0.75rem' }}>
+                👤 User: user@example.com / password
+              </Typography>
+              <Typography variant="caption" display="block" sx={{ fontSize: '0.75rem' }}>
+                🏢 Client: client@example.com / password
+              </Typography>
+              <Typography variant="caption" display="block" sx={{ fontSize: '0.75rem' }}>
+                👨‍💼 Admin: admin@example.com / password
+              </Typography>
+            </Alert>
+
+            {error && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
+              </Alert>
+            )}
+
+            {/* Login Form */}
+            <Box component="form" onSubmit={handleSubmit}>
+              <TextField
+                fullWidth
+                label="Email Address"
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                margin="normal"
+                required
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 2,
+                    fontSize: '0.95rem',
+                  },
+                  '& .MuiFormLabel-root': {
+                    fontSize: '0.95rem',
+                    fontWeight: 500,
+                  },
                 }}
               />
-            ))}
-          </Stack>
+              <TextField
+                fullWidth
+                label="Password"
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                margin="normal"
+                required
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 2,
+                    fontSize: '0.95rem',
+                  },
+                  '& .MuiFormLabel-root': {
+                    fontSize: '0.95rem',
+                    fontWeight: 500,
+                  },
+                }}
+              />
 
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                size="large"
+                disabled={loading}
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  py: 1.5,
+                  fontWeight: 700,
+                  fontSize: '1rem',
+                  textTransform: 'none',
+                  borderRadius: 2,
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  boxShadow: '0 8px 24px rgba(102, 126, 234, 0.3)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 12px 32px rgba(102, 126, 234, 0.4)',
+                  },
+                  '&:disabled': {
+                    background: 'linear-gradient(135deg, #9ca3af 0%, #6b7280 100%)',
+                  },
+                }}
+              >
+                {loading ? 'Signing in...' : 'Sign In'}
+              </Button>
+            </Box>
 
-          <Box component="form" onSubmit={handleSubmit}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label={i18n.t('common.email')}
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={i18n.t('auth.emailPlaceholder')}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label={i18n.t('common.password')}
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder={i18n.t('auth.passwordPlaceholder')}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              {i18n.t('auth.loginButton')}
-            </Button>
+            {/* Footer */}
+            <Box sx={{ textAlign: 'center', mt: 3, pt: 3, borderTop: '1px solid #e5e7eb' }}>
+              <Typography variant="caption" color="textSecondary">
+                © 2026 RealEstate Hub. All rights reserved.
+              </Typography>
+            </Box>
           </Box>
-        </Paper>
+        </Container>
       </Box>
-    </Container>
+    </Box>
   );
 };
