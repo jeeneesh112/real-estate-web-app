@@ -20,120 +20,181 @@ interface TowerState {
 
 // Mock data linked to projects
 const mockTowers: Tower[] = [
-  // Skyline Residency (proj-001) - 3 towers
+  // Riverfront Heights (proj-ahm-001)
   {
-    id: 'tower-001',
-    project_id: 'proj-001',
-    name: 'Tower A',
-    image_id: 'img-tower-a-001',
-    floors: 32,
-    units_per_floor: 3,
-    created_at: '2025-01-15T10:30:00Z',
-    modified_at: '2025-12-17T08:00:00Z',
-    deleted_at: null,
-    created_by: 'user-001',
-  },
-  {
-    id: 'tower-002',
-    project_id: 'proj-001',
-    name: 'Tower B',
-    image_id: 'img-tower-b-001',
+    id: 'tower-ahm-001-a',
+    project_id: 'proj-ahm-001',
+    name: 'Riverfront Tower A',
+    image_id: 'img-riverfront-tower-a',
     floors: 28,
-    units_per_floor: 3,
-    created_at: '2025-01-15T10:30:00Z',
-    modified_at: '2025-12-17T08:00:00Z',
-    deleted_at: null,
-    created_by: 'user-001',
-  },
-  {
-    id: 'tower-003',
-    project_id: 'proj-001',
-    name: 'Tower C',
-    image_id: 'img-tower-c-001',
-    floors: 35,
-    units_per_floor: 3,
-    created_at: '2025-01-15T10:30:00Z',
-    modified_at: '2025-12-17T08:00:00Z',
-    deleted_at: null,
-    created_by: 'user-001',
-  },
-  // Green Valley Apartments (proj-002) - 2 towers
-  {
-    id: 'tower-004',
-    project_id: 'proj-002',
-    name: 'North Wing',
-    image_id: 'img-tower-nw-001',
-    floors: 20,
-    units_per_floor: 2,
-    created_at: '2025-02-10T14:30:00Z',
-    modified_at: '2025-12-16T08:00:00Z',
-    deleted_at: null,
-    created_by: 'user-001',
-  },
-  {
-    id: 'tower-005',
-    project_id: 'proj-002',
-    name: 'South Wing',
-    image_id: 'img-tower-sw-001',
-    floors: 18,
-    units_per_floor: 3,
-    created_at: '2025-02-10T14:30:00Z',
-    modified_at: '2025-12-16T08:00:00Z',
-    deleted_at: null,
-    created_by: 'user-001',
-  },
-  // Tech Park Plaza (proj-003) - 2 towers
-  {
-    id: 'tower-006',
-    project_id: 'proj-003',
-    name: 'Commercial Tower',
-    image_id: 'img-tower-comm-001',
-    floors: 40,
-    units_per_floor: 3,
-    created_at: '2025-03-20T09:00:00Z',
-    modified_at: '2025-12-17T08:00:00Z',
-    deleted_at: null,
-    created_by: 'user-001',
-  },
-  {
-    id: 'tower-007',
-    project_id: 'proj-003',
-    name: 'Residential Tower',
-    image_id: 'img-tower-res-001',
-    floors: 30,
-    units_per_floor: 2,
-    created_at: '2025-03-20T09:00:00Z',
-    modified_at: '2025-12-17T08:00:00Z',
-    deleted_at: null,
-    created_by: 'user-001',
-  },
-  // Heritage Heights (proj-004) - 1 tower
-  {
-    id: 'tower-008',
-    project_id: 'proj-004',
-    name: 'Heritage Tower',
-    image_id: 'img-tower-heritage-001',
-    floors: 25,
     units_per_floor: 4,
-    created_at: '2025-04-05T11:20:00Z',
-    modified_at: '2025-12-15T08:00:00Z',
+    created_at: '2025-01-10T10:30:00Z',
+    modified_at: '2025-01-10T10:30:00Z',
     deleted_at: null,
     created_by: 'user-001',
   },
-  // Oceanfront Villas (proj-005) - 1 tower (villa complex)
   {
-    id: 'tower-009',
-    project_id: 'proj-005',
-    name: 'Villa Complex',
-    image_id: 'img-tower-villa-001',
-    floors: 3,
-    units_per_floor: 2,
-    created_at: '2025-05-12T08:00:00Z',
-    modified_at: '2025-12-17T08:00:00Z',
+    id: 'tower-ahm-001-b',
+    project_id: 'proj-ahm-001',
+    name: 'Riverfront Tower B',
+    image_id: 'img-riverfront-tower-b',
+    floors: 32,
+    units_per_floor: 4,
+    created_at: '2025-01-10T10:30:00Z',
+    modified_at: '2025-01-10T10:30:00Z',
+    deleted_at: null,
+    created_by: 'user-001',
+  },
+
+  // Shantigram Residency (proj-ahm-002)
+  {
+    id: 'tower-ahm-002-a',
+    project_id: 'proj-ahm-002',
+    name: 'Shantigram Tower A',
+    image_id: 'img-shantigram-tower-a',
+    floors: 22,
+    units_per_floor: 4,
+    created_at: '2025-01-25T11:30:00Z',
+    modified_at: '2025-01-25T11:30:00Z',
+    deleted_at: null,
+    created_by: 'user-001',
+  },
+  {
+    id: 'tower-ahm-002-b',
+    project_id: 'proj-ahm-002',
+    name: 'Shantigram Tower B',
+    image_id: 'img-shantigram-tower-b',
+    floors: 24,
+    units_per_floor: 4,
+    created_at: '2025-01-25T11:30:00Z',
+    modified_at: '2025-01-25T11:30:00Z',
+    deleted_at: null,
+    created_by: 'user-001',
+  },
+
+  // Skyline Avenue (proj-ahm-003)
+  {
+    id: 'tower-ahm-003-a',
+    project_id: 'proj-ahm-003',
+    name: 'Skyline Tower',
+    image_id: 'img-skyline-tower',
+    floors: 30,
+    units_per_floor: 3,
+    created_at: '2025-02-10T10:00:00Z',
+    modified_at: '2025-02-10T10:00:00Z',
+    deleted_at: null,
+    created_by: 'user-001',
+  },
+
+  // Westend Living (proj-ahm-004)
+  {
+    id: 'tower-ahm-004-a',
+    project_id: 'proj-ahm-004',
+    name: 'Westend Block A',
+    image_id: 'img-westend-block-a',
+    floors: 18,
+    units_per_floor: 4,
+    created_at: '2025-02-28T14:30:00Z',
+    modified_at: '2025-02-28T14:30:00Z',
+    deleted_at: null,
+    created_by: 'user-001',
+  },
+  {
+    id: 'tower-ahm-004-b',
+    project_id: 'proj-ahm-004',
+    name: 'Westend Block B',
+    image_id: 'img-westend-block-b',
+    floors: 20,
+    units_per_floor: 4,
+    created_at: '2025-02-28T14:30:00Z',
+    modified_at: '2025-02-28T14:30:00Z',
+    deleted_at: null,
+    created_by: 'user-001',
+  },
+
+  // Central Park Homes (proj-ahm-005)
+  {
+    id: 'tower-ahm-005-a',
+    project_id: 'proj-ahm-005',
+    name: 'Central Park Tower',
+    image_id: 'img-centralpark-tower',
+    floors: 26,
+    units_per_floor: 4,
+    created_at: '2025-05-05T09:30:00Z',
+    modified_at: '2025-05-05T09:30:00Z',
+    deleted_at: null,
+    created_by: 'user-001',
+  },
+
+  // Capital Greens (proj-gnd-001)
+  {
+    id: 'tower-gnd-001-a',
+    project_id: 'proj-gnd-001',
+    name: 'Capital Tower A',
+    image_id: 'img-capital-tower-a',
+    floors: 24,
+    units_per_floor: 4,
+    created_at: '2025-03-12T10:00:00Z',
+    modified_at: '2025-03-12T10:00:00Z',
+    deleted_at: null,
+    created_by: 'user-001',
+  },
+  {
+    id: 'tower-gnd-001-b',
+    project_id: 'proj-gnd-001',
+    name: 'Capital Tower B',
+    image_id: 'img-capital-tower-b',
+    floors: 26,
+    units_per_floor: 4,
+    created_at: '2025-03-12T10:00:00Z',
+    modified_at: '2025-03-12T10:00:00Z',
+    deleted_at: null,
+    created_by: 'user-001',
+  },
+
+  // Heritage Enclave (proj-gnd-002)
+  {
+    id: 'tower-gnd-002-a',
+    project_id: 'proj-gnd-002',
+    name: 'Heritage Tower',
+    image_id: 'img-heritage-tower',
+    floors: 20,
+    units_per_floor: 4,
+    created_at: '2025-04-05T11:45:00Z',
+    modified_at: '2025-04-05T11:45:00Z',
+    deleted_at: null,
+    created_by: 'user-001',
+  },
+
+  // Palm Meadows (proj-gnd-003)
+  {
+    id: 'tower-gnd-003-a',
+    project_id: 'proj-gnd-003',
+    name: 'Palm Block A',
+    image_id: 'img-palm-block-a',
+    floors: 16,
+    units_per_floor: 4,
+    created_at: '2025-04-18T11:00:00Z',
+    modified_at: '2025-04-18T11:00:00Z',
+    deleted_at: null,
+    created_by: 'user-001',
+  },
+
+  // City View Residency (proj-gnd-004)
+  {
+    id: 'tower-gnd-004-a',
+    project_id: 'proj-gnd-004',
+    name: 'City View Tower',
+    image_id: 'img-cityview-tower',
+    floors: 22,
+    units_per_floor: 4,
+    created_at: '2025-05-20T11:30:00Z',
+    modified_at: '2025-05-20T11:30:00Z',
     deleted_at: null,
     created_by: 'user-001',
   },
 ];
+
 
 const initialState: TowerState = {
   towers: mockTowers,
@@ -163,6 +224,9 @@ const towerSlice = createSlice({
 
 export const { setTowers, addTower } = towerSlice.actions;
 export default towerSlice.reducer;
+
+// Export mock data for other slices (e.g., flats)
+export { mockTowers };
 
 // Selectors
 export const getTowersByProjectId = (state: RootState, projectId: string): Tower[] => {

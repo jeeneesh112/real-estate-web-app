@@ -24,7 +24,7 @@ const mockVirtualTours: VirtualTour[] = [
   {
     id: 'vt-001',
     user_id: 'user-001',
-    project_id: 'proj-001',
+    project_id: 'proj-ahm-001', // Riverfront Heights
     start_time: '2025-12-22T10:00:00Z',
     end_time: '2025-12-22T10:30:00Z',
     status: 'IN_PROGRESS',
@@ -36,7 +36,7 @@ const mockVirtualTours: VirtualTour[] = [
   {
     id: 'vt-002',
     user_id: 'user-002',
-    project_id: 'proj-002',
+    project_id: 'proj-ahm-002', // Shantigram Residency
     start_time: '2025-12-18T14:00:00Z',
     end_time: '2025-12-18T14:45:00Z',
     status: 'COMPLETED',
@@ -48,7 +48,7 @@ const mockVirtualTours: VirtualTour[] = [
   {
     id: 'vt-003',
     user_id: 'user-003',
-    project_id: 'proj-003',
+    project_id: 'proj-ahm-003', // Skyline Avenue
     start_time: '2025-12-25T11:00:00Z',
     end_time: '2025-12-25T11:30:00Z',
     status: 'IN_PROGRESS',
@@ -60,7 +60,7 @@ const mockVirtualTours: VirtualTour[] = [
   {
     id: 'vt-004',
     user_id: 'user-004',
-    project_id: 'proj-004',
+    project_id: 'proj-ahm-004', // Westend Living
     start_time: '2025-12-20T09:00:00Z',
     end_time: '2025-12-20T09:45:00Z',
     status: 'COMPLETED',
@@ -72,7 +72,7 @@ const mockVirtualTours: VirtualTour[] = [
   {
     id: 'vt-005',
     user_id: 'user-005',
-    project_id: 'proj-005',
+    project_id: 'proj-ahm-005', // Central Park Homes
     start_time: '2025-12-10T16:00:00Z',
     end_time: '2025-12-10T16:30:00Z',
     status: 'COMPLETED',
@@ -84,7 +84,7 @@ const mockVirtualTours: VirtualTour[] = [
   {
     id: 'vt-006',
     user_id: 'user-001',
-    project_id: 'proj-003',
+    project_id: 'proj-gnd-003', // Palm Meadows (Gandhinagar)
     start_time: '2025-12-05T13:00:00Z',
     end_time: '2025-12-05T13:30:00Z',
     status: 'COMPLETED',
@@ -94,6 +94,8 @@ const mockVirtualTours: VirtualTour[] = [
     created_by: 'user-001',
   },
 ];
+
+
 
 const initialState: VirtualTourState = {
   virtualTours: mockVirtualTours,
